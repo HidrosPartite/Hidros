@@ -1,19 +1,168 @@
 <!DOCTYPE html>
-<html>
+<html lang="it">
 <head>
-    <title>Le Mie Partite</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Hidros | Archivio Partite</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
-        body { background-color: #1a1a1a; color: white; font-family: sans-serif; text-align: center; }
-        .card { border: 1px solid #333; margin: 10px; padding: 10px; border-radius: 10px; background: #222; }
-        button { background: #0088cc; color: white; border: none; padding: 10px; border-radius: 5px; cursor: pointer; }
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #000;
+            color: #fff;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+
+        /* Header Hidros */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 15px;
+            background-color: #1c1c1c;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-weight: 800;
+            font-size: 20px;
+            color: #a855f7;
+            text-transform: uppercase;
+        }
+
+        .icons {
+            display: flex;
+            gap: 20px;
+            font-size: 18px;
+            color: #ccc;
+        }
+
+        /* Banner Principale con la TUA immagine */
+        .hero {
+            position: relative;
+            width: 100%;
+            height: 250px;
+            /* Ho inserito il riferimento alla tua immagine caricata */
+            background: linear-gradient(to bottom, transparent, #000), url('screenshot.png');
+            background-size: cover;
+            background-position: center;
+        }
+
+        .section-title {
+            padding: 20px 15px 5px;
+            font-size: 19px;
+            font-weight: bold;
+        }
+
+        .section-subtitle {
+            padding: 0 15px 15px;
+            font-size: 12px;
+            color: #888;
+        }
+
+        /* Griglia Orizzontale */
+        .horizontal-scroll {
+            display: flex;
+            overflow-x: auto;
+            padding: 0 15px;
+            gap: 15px;
+            scrollbar-width: none;
+        }
+
+        .card {
+            min-width: 160px;
+            cursor: pointer;
+        }
+
+        .thumbnail-container {
+            position: relative;
+            width: 160px;
+            height: 100px;
+            border-radius: 10px;
+            overflow: hidden;
+            background: #1c1c1c;
+        }
+
+        .thumbnail-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Play Button */
+        .play-overlay {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(168, 85, 247, 0.8);
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .play-overlay::after {
+            content: '▶';
+            font-size: 12px;
+            color: white;
+            margin-left: 2px;
+        }
+
+        .card-title {
+            margin-top: 8px;
+            font-size: 13px;
+            font-weight: 600;
+        }
     </style>
 </head>
 <body>
-    <h1>Archivio Partite</h1>
-    <div class="card">
-        <p>Partita del 15 Gennaio</p>
-        <button onclick="Telegram.WebApp.sendData('partita_01')">Guarda Video</button>
+
+    <div class="header">
+        <div class="logo">Hidros</div>
+        <div class="icons">
+            <img src="LenteDiIngrandimento.png" style="height: 20px; vertical-align: middle;">
+            <img src="Cronologia.png" style="height: 20px; vertical-align: middle;">
+            <img src="SegnaLibro.png" style="height: 20px; vertical-align: middle;">
+        </div>
     </div>
+
+    <div class="hero"></div>
+
+    <div class="section-title">Ultime partite</div>
+    <div class="section-subtitle">Guarda le ultime partite caricate!</div>
+
+    <div class="horizontal-scroll">
+        <div class="card" onclick="sendMatch('partita_01')">
+            <div class="thumbnail-container">
+                <img src="screenshot.png">
+                <div class="play-overlay"></div>
+            </div>
+            <div class="card-title">Partita Squadra A vs B</div>
+        </div>
+        
+        <div class="card" onclick="sendMatch('partita_02')">
+            <div class="thumbnail-container">
+                <img src="screenshot.png">
+                <div class="play-overlay"></div>
+            </div>
+            <div class="card-title">Finale Torneo Amici</div>
+        </div>
+    </div>
+
+    <script>
+        const tg = window.Telegram.WebApp;
+        tg.expand();
+        tg.setHeaderColor('#1c1c1c');
+
+        function sendMatch(matchId) {
+            tg.sendData(matchId);
+        }
+    </script>
 </body>
 </html>
