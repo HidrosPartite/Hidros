@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Le Mie Partite</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        body { background-color: #1a1a1a; color: white; font-family: sans-serif; text-align: center; }
+        .card { border: 1px solid #333; margin: 10px; padding: 10px; border-radius: 10px; background: #222; }
+        button { background: #0088cc; color: white; border: none; padding: 10px; border-radius: 5px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <h1>Archivio Partite</h1>
+    <div class="card">
+        <p>Partita del 15 Gennaio</p>
+        <button onclick="Telegram.WebApp.sendData('partita_01')">Guarda Video</button>
+    </div>
+</body>
+</html>
