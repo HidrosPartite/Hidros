@@ -3,77 +3,304 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>Hidros App</title>
+    <title>Hidros | Archivio Volley</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
-        body { margin: 0; padding: 0; background-color: #000; color: #fff; font-family: sans-serif; overflow-x: hidden; }
-        
-        /* Header */
-        .header { display: flex; justify-content: space-between; align-items: center; padding: 15px; background: #121212; sticky; top: 0; z-index: 100; }
-        .logo { font-weight: bold; font-size: 20px; color: #a855f7; text-transform: uppercase; }
-        .icons { display: flex; gap: 15px; align-items: center; }
-        
-        /* La tua foto nell'header */
-        .icon-img { width: 24px; height: 24px; object-fit: cover; border-radius: 50%; border: 1px solid #a855f7; }
+        body { margin: 0; padding: 0; background-color: #000; color: #fff; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; overflow-x: hidden; }
 
-        /* Sidebar (Menu laterale) */
-        .sidebar { height: 100%; width: 0; position: fixed; z-index: 200; top: 0; left: 0; background-color: #111; overflow-x: hidden; transition: 0.3s; padding-top: 60px; }
-        .sidebar a { padding: 15px 25px; text-decoration: none; font-size: 18px; color: #818181; display: block; }
+        /* --- SIDEBAR --- */
+        .sidebar { height: 100%; width: 0; position: fixed; z-index: 600; top: 0; left: 0; background-color: #111; overflow-x: hidden; transition: 0.3s; padding-top: 60px; }
+        .sidebar a, .dropdown-btn { padding: 15px 25px; text-decoration: none; font-size: 18px; color: #ccc; display: block; border: none; background: none; width: 100%; text-align: left; cursor: pointer; outline: none; font-family: inherit; }
         .sidebar .closebtn { position: absolute; top: 10px; right: 25px; font-size: 36px; }
+        .dropdown-container { display: none; background-color: #1a1a1a; }
+        .sub-container { background-color: #222 !important; padding-left: 20px; }
+        .caret { font-size: 12px; float: right; margin-top: 5px; }
 
-        /* Banner Principale */
-        .hero { width: 100%; height: 200px; background: linear-gradient(to bottom, transparent, #000), url('screenshot.png'); background-size: cover; background-position: center; }
+        /* --- HEADER --- */
+        .header { display: flex; justify-content: space-between; align-items: center; padding: 12px 15px; background-color: #1c1c1c; position: sticky; top: 0; z-index: 100; }
+        .header-left { display: flex; align-items: center; gap: 15px; }
+        .menu-icon { font-size: 24px; cursor: pointer; }
+        .logo { font-weight: 800; font-size: 20px; color: #a855f7; text-transform: uppercase; cursor: pointer; }
+        .icons img { height: 22px; vertical-align: middle; margin-left: 15px; cursor: pointer; }
 
-        /* Sezioni */
-        .section-title { padding: 20px 15px 5px; font-size: 18px; font-weight: bold; }
-        .horizontal-scroll { display: flex; overflow-x: auto; padding: 10px 15px; gap: 15px; }
-        .card { min-width: 150px; }
-        .thumb { position: relative; width: 150px; height: 90px; border-radius: 8px; overflow: hidden; }
-        .thumb img { width: 100%; height: 100%; object-fit: cover; }
-        .play-btn { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(168, 85, 247, 0.8); width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+        /* --- RICERCA --- */
+        #search-bar-container { display: none; padding: 15px; background: #1c1c1c; }
+        #search-input { width: 100%; padding: 12px; border-radius: 8px; border: none; background: #333; color: #fff; font-size: 16px; box-sizing: border-box; }
+        #search-results { background: #000; }
+        .search-result-item { display: flex; align-items: center; padding: 10px; border-bottom: 1px solid #222; gap: 15px; cursor: pointer; }
+        .search-thumb { width: 100px; aspect-ratio: 16/9; border-radius: 5px; object-fit: cover; }
+        .search-info b { font-size: 14px; color: #fff; }
+
+        /* --- PLAYER PAGE --- */
+        #player-page { background-color: #000; z-index: 700; position: fixed; top: 0; left: 0; width: 100%; height: 100%; overflow-y: auto; display: none; }
+        .player-cover { width: 100%; aspect-ratio: 16/9; object-fit: cover; }
+        .player-content { padding: 5px 20px 40px; margin-top: -15px; } /* Alzata sotto la copertina */
+        .p-cat-tag { background: #a855f7; display: inline-block; padding: 5px 12px; border-radius: 6px; font-weight: bold; font-size: 14px; margin-bottom: 15px; }
+        .player-title { font-size: 38px; font-weight: 900; line-height: 1.1; margin-bottom: 15px; }
+        .player-score { font-size: 50px; font-weight: 900; color: #a855f7; margin-bottom: 5px; letter-spacing: -2px; }
+        .player-date { font-size: 22px; color: #888; margin-bottom: 30px; font-weight: 600; }
+        .watch-btn { width: 100%; background: #fff; color: #000; border: none; padding: 18px; border-radius: 15px; font-size: 20px; font-weight: 800; cursor: pointer; }
+        .back-btn-player { position: absolute; top: 20px; left: 20px; background: rgba(0,0,0,0.7); color: white; border: none; width: 45px; height: 45px; border-radius: 50%; font-size: 20px; z-index: 710; display: flex; align-items: center; justify-content: center; }
+
+        /* --- LAYOUT --- */
+        .page { display: none; min-height: 100vh; padding-bottom: 50px; }
+        .active-page { display: block; }
+        .section-title { padding: 20px 15px 5px; font-size: 22px; font-weight: bold; }
+        .horizontal-scroll { display: flex; overflow-x: auto; padding: 10px 15px; gap: 20px; scrollbar-width: none; }
+        .card { min-width: 240px; cursor: pointer; position: relative; }
+        .thumbnail-container { position: relative; width: 100%; aspect-ratio: 16/9; border-radius: 15px; overflow: hidden; background: #1c1c1c; }
+        .thumbnail-container img { width: 100%; height: 100%; object-fit: cover; }
+        .save-badge { position: absolute; top: 10px; right: 10px; background: #a855f7; padding: 6px 12px; border-radius: 8px; font-size: 11px; font-weight: bold; z-index: 10; }
+        .card-title { margin-top: 12px; font-size: 16px; font-weight: 700; }
+
+        /* --- SLIDER --- */
+        .slider-container { position: relative; width: 100%; height: 350px; overflow: hidden; }
+        .slider { display: flex; width: 100%; height: 100%; transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
+        .slide { min-width: 100%; height: 100%; position: relative; background-size: cover; background-position: center; cursor: pointer; }
+        .slide-info { position: absolute; bottom: 0; left: 0; right: 0; padding: 60px 20px 30px; background: linear-gradient(to top, #000, transparent); }
+        .progress-container { position: absolute; bottom: 0; width: 100%; height: 4px; background: rgba(255,255,255,0.1); }
+        .progress-bar { height: 100%; width: 0; background: #a855f7; }
+
+        /* --- SALVATI (Messaggio originale ripristinato) --- */
+        .empty-message { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; color: #555; height: 70vh; padding: 20px; }
+        .empty-message h2 { font-size: 30px; color: #888; margin-bottom: 10px; }
+        .empty-message p { font-size: 18px; color: #444; margin-bottom: 25px; }
+        .home-btn { background: #a855f7; color: white; border: none; padding: 12px 30px; border-radius: 30px; font-weight: bold; font-size: 16px; cursor: pointer; }
+        .clear-btn { display: block; width: 80%; margin: 30px auto; background: none; border: 1px solid #444; color: #888; padding: 12px; border-radius: 10px; font-weight: bold; }
+        .saved-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 15px; }
+
     </style>
 </head>
 <body>
 
     <div id="mySidebar" class="sidebar">
         <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
-        <h2 style="color:white; padding: 0 25px;">Menu</h2>
-        <a href="#">🏠 Home</a>
-        <a href="#">📂 Archivio</a>
-        <a href="#">⚙️ Impostazioni</a>
+        <div style="padding: 0 25px 20px; font-weight: bold; color: #a855f7; font-size: 24px;">HIDROS</div>
+        <a href="#" onclick="showPage('home')">🏠 Home</a>
+        <button class="dropdown-btn" onclick="toggleDropdown('tournaments')">🏆 Tutti i Tornei <span class="caret">▼</span></button>
+        <div class="dropdown-container" id="tournaments">
+            <button class="dropdown-btn" onclick="toggleDropdown('u14')">Under 14 <span class="caret">▼</span></button>
+            <div class="dropdown-container sub-container" id="u14"><a href="#" onclick="openCategory('Under 14')">📅 25-26</a></div>
+            <button class="dropdown-btn" onclick="toggleDropdown('u15')">Under 15 <span class="caret">▼</span></button>
+            <div class="dropdown-container sub-container" id="u15"><a href="#" onclick="openCategory('Under 15')">📅 25-26</a></div>
+            <button class="dropdown-btn" onclick="toggleDropdown('u16')">Under 16 <span class="caret">▼</span></button>
+            <div class="dropdown-container sub-container" id="u16"><a href="#" onclick="openCategory('Under 16')">📅 25-26</a></div>
+            <button class="dropdown-btn" onclick="toggleDropdown('u17')">Under 17 <span class="caret">▼</span></button>
+            <div class="dropdown-container sub-container" id="u17"><a href="#" onclick="openCategory('Under 17')">📅 25-26</a></div>
+            <button class="dropdown-btn" onclick="toggleDropdown('u18')">Under 18 <span class="caret">▼</span></button>
+            <div class="dropdown-container sub-container" id="u18"><a href="#" onclick="openCategory('Under 18')">📅 25-26</a></div>
+            <button class="dropdown-btn" onclick="toggleDropdown('u19')">Under 19 <span class="caret">▼</span></button>
+            <div class="dropdown-container sub-container" id="u19"><a href="#" onclick="openCategory('Under 19')">📅 25-26</a></div>
+            <button class="dropdown-btn" onclick="toggleDropdown('pdiv')">Prima Divisione <span class="caret">▼</span></button>
+            <div class="dropdown-container sub-container" id="pdiv"><a href="#" onclick="openCategory('Prima Divisione')">📅 25-26</a></div>
+            <button class="dropdown-btn" onclick="toggleDropdown('seried')">Serie D <span class="caret">▼</span></button>
+            <div class="dropdown-container sub-container" id="seried"><a href="#" onclick="openCategory('Serie D')">📅 25-26</a></div>
+            <button class="dropdown-btn" onclick="toggleDropdown('seriec')">Serie C <span class="caret">▼</span></button>
+            <div class="dropdown-container sub-container" id="seriec"><a href="#" onclick="openCategory('Serie C')">📅 25-26</a></div>
+        </div>
     </div>
 
     <div class="header">
-        <div onclick="openNav()" style="font-size: 24px; cursor: pointer;">☰</div>
-        <div class="logo">Hidros</div>
+        <div class="header-left"><div class="menu-icon" onclick="openNav()">☰</div><div class="logo" onclick="showPage('home')">Hidros</div></div>
         <div class="icons">
-            <span>🔍</span>
-            <img src="screenshot.png" class="icon-img">
+            <img src="LenteDiIngrandimento.png" onclick="toggleSearch()">
+            <img src="Cronologia.png">
+            <img src="SegnaLibro.png" onclick="showSavedPage()">
         </div>
     </div>
 
-    <div class="hero"></div>
+    <div id="search-bar-container">
+        <input type="text" id="search-input" placeholder="Cerca partita Hidros..." oninput="handleSearch(this.value)">
+        <div id="search-results"></div>
+    </div>
 
-    <div class="section-title">Ultime Partite</div>
-    <div class="horizontal-scroll">
-        <div class="card" onclick="sendMatch('partita_01')">
-            <div class="thumb">
-                <img src="screenshot.png">
-                <div class="play-btn">▶</div>
+    <div id="home" class="page active-page">
+        <div class="section-title">Partite da non perdere</div>
+        <div class="slider-container">
+            <div class="slider" id="homeSlider">
+                <div class="slide" style="background-image: url('screenshot.png');" onclick="openMatch('1')">
+                    <div class="slide-info"><div class="p-cat-tag">IN EVIDENZA</div><div class="slide-title">Hidros vs Vero Volley</div></div>
+                </div>
+                <div class="slide" style="background-image: url('screenshot.png');" onclick="openMatch('2')">
+                    <div class="slide-info"><div class="p-cat-tag">TOP MATCH</div><div class="slide-title">Hidros vs Lube Civitanova</div></div>
+                </div>
             </div>
-            <p style="font-size: 12px; margin-top: 5px;">Partita di test 1</p>
+            <div class="progress-container"><div class="progress-bar" id="homeProgressBar"></div></div>
         </div>
+        <div class="section-title">Ultime Sfide Hidros</div>
+        <div class="horizontal-scroll" id="latest-matches"></div>
+    </div>
+
+    <div id="category-page" class="page">
+        <div class="section-title">Partite da non perdere</div>
+        <div class="slider-container">
+            <div class="slider" id="catSlider"></div>
+            <div class="progress-container"><div class="progress-bar" id="catProgressBar"></div></div>
+        </div>
+        <div class="section-title" id="cat-all-title">Tutte le partite</div>
+        <div class="horizontal-scroll" id="cat-all-list"></div>
+    </div>
+
+    <div id="player-page">
+        <button class="back-btn-player" onclick="closePlayer()">✕</button>
+        <img id="p-img" class="player-cover" src="">
+        <div class="player-content">
+            <div id="p-cat" class="p-cat-tag">CATEGORIA</div>
+            <div id="p-title" class="player-title">Titolo</div>
+            <div id="p-score" class="player-score">0 - 0</div>
+            <div id="p-date" class="player-date">Data</div>
+            <button class="watch-btn" onclick="startVideo()">GUARDA IL MATCH</button>
+        </div>
+    </div>
+
+    <div id="saved-page" class="page">
+        <div id="saved-content"></div>
     </div>
 
     <script>
         const tg = window.Telegram.WebApp;
         tg.expand();
 
-        function openNav() { document.getElementById("mySidebar").style.width = "250px"; }
+        const DB_PARTITE = [
+            { id: '1', titolo: 'Hidros vs Vero Volley', cat: 'Serie C', anno: '12 Gen 2026', punteggio: '3 - 1', img: 'screenshot.png' },
+            { id: '2', titolo: 'Hidros vs Lube Civitanova', cat: 'Under 16', anno: '08 Gen 2026', punteggio: '3 - 2', img: 'screenshot.png' },
+            { id: '3', titolo: 'Hidros vs Modena Volley', cat: 'Under 14', anno: '05 Gen 2026', punteggio: '0 - 3', img: 'screenshot.png' },
+            { id: '4', titolo: 'Hidros vs Trentino Itas', cat: 'Serie C', anno: '01 Gen 2026', punteggio: '3 - 0', img: 'screenshot.png' }
+        ];
+
+        let currentMatchId = '';
+        let sliders = { home: { idx: 0, start: Date.now() }, cat: { idx: 0, start: Date.now() } };
+
+        function openMatch(id) {
+            const match = DB_PARTITE.find(p => p.id === id);
+            if(!match) return;
+            document.getElementById('p-img').src = match.img;
+            document.getElementById('p-title').innerText = match.titolo;
+            document.getElementById('p-score').innerText = match.punteggio;
+            document.getElementById('p-cat').innerText = match.cat.toUpperCase();
+            document.getElementById('p-date').innerText = match.anno;
+            document.getElementById('player-page').style.display = 'block';
+            document.body.style.overflow = 'hidden';
+            currentMatchId = id;
+        }
+
+        function closePlayer() { 
+            document.getElementById('player-page').style.display = 'none'; 
+            document.body.style.overflow = 'auto';
+        }
+
+        function startVideo() { 
+            // Invia l'ID al bot e chiude per far vedere il video in chat
+            tg.sendData(currentMatchId); 
+            tg.HapticFeedback.impactOccurred('heavy');
+            setTimeout(() => { tg.close(); }, 150); 
+        }
+
+        function showPage(pageId) {
+            closePlayer(); closeNav();
+            document.getElementById('search-bar-container').style.display = 'none';
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active-page'));
+            document.getElementById(pageId).classList.add('active-page');
+            window.scrollTo(0,0);
+        }
+
+        function handleSearch(val) {
+            const res = document.getElementById('search-results');
+            if(!val) { res.innerHTML = ''; return; }
+            const filtered = DB_PARTITE.filter(p => p.titolo.toLowerCase().includes(val.toLowerCase()) || p.cat.toLowerCase().includes(val.toLowerCase()));
+            res.innerHTML = filtered.map(p => `
+                <div class="search-result-item" onclick="openMatch('${p.id}')">
+                    <img src="${p.img}" class="search-thumb">
+                    <div class="search-info"><b>${p.titolo}</b><div>${p.cat}</div></div>
+                </div>`).join('');
+        }
+
+        function openCategory(nome) {
+            showPage('category-page');
+            document.getElementById('cat-all-title').innerText = "Tutte le partite " + nome;
+            document.getElementById('catSlider').innerHTML = `
+                <div class="slide" style="background-image: url('screenshot.png');" onclick="openMatch('1')">
+                    <div class="slide-info"><div class="p-cat-tag">IN EVIDENZA</div><div class="slide-title">Il meglio di ${nome}</div></div>
+                </div>`;
+            document.getElementById('cat-all-list').innerHTML = DB_PARTITE.map(p => `
+                <div class="card" onclick="openMatch('${p.id}')">
+                    <div class="thumbnail-container"><img src="${p.img}"><div class="save-badge" onclick="event.stopPropagation(); saveMatch('${p.id}', '${p.titolo}', '${p.img}')">SALVA</div></div>
+                    <div class="card-title">${p.titolo}</div>
+                </div>`).join('');
+        }
+
+        function saveMatch(id, title, img) {
+            let saved = JSON.parse(localStorage.getItem('hidros_saved') || '[]');
+            if (!saved.find(m => m.id === id)) {
+                saved.push({id, title, img});
+                localStorage.setItem('hidros_saved', JSON.stringify(saved));
+                tg.HapticFeedback.notificationOccurred('success');
+            }
+        }
+
+        function showSavedPage() {
+            showPage('saved-page');
+            const saved = JSON.parse(localStorage.getItem('hidros_saved') || '[]');
+            const container = document.getElementById('saved-content');
+            
+            if (saved.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-message">
+                        <h2>Nessuna partita salvata</h2>
+                        <p>Le partite salvate appariranno qui</p>
+                        <button class="home-btn" onclick="showPage('home')">Torna alla Home</button>
+                    </div>`;
+            } else {
+                let html = `<div class="section-title" style="font-size:24px;">I tuoi Segnalibri</div><div class="saved-grid">`;
+                saved.forEach(m => {
+                    html += `<div class="card" onclick="openMatch('${m.id}')"><div class="thumbnail-container"><img src="${m.img}"></div><div class="card-title">${m.title}</div></div>`;
+                });
+                html += `</div><button class="clear-btn" onclick="localStorage.removeItem('hidros_saved'); showSavedPage();">Svuota tutto</button>`;
+                container.innerHTML = html;
+            }
+        }
+
+        function animate() {
+            const keys = ['home', 'cat'];
+            keys.forEach(k => {
+                const p = document.getElementById(k);
+                if(p && p.classList.contains('active-page')) {
+                    const bar = document.getElementById(k + 'ProgressBar');
+                    const slider = document.getElementById(k + 'Slider');
+                    if(!bar || !slider) return;
+                    let elapsed = Date.now() - sliders[k].start;
+                    bar.style.width = Math.min((elapsed/5000)*100, 100) + "%";
+                    if(elapsed >= 5000) {
+                        const slides = slider.querySelectorAll('.slide');
+                        if(slides.length > 1) {
+                            sliders[k].idx = (sliders[k].idx + 1) % slides.length;
+                            slider.style.transform = `translateX(-${sliders[k].idx*100}%)`;
+                        }
+                        sliders[k].start = Date.now();
+                    }
+                }
+            });
+            requestAnimationFrame(animate);
+        }
+        animate();
+
+        // INIT
+        document.getElementById('latest-matches').innerHTML = DB_PARTITE.map(p => `
+            <div class="card" onclick="openMatch('${p.id}')">
+                <div class="thumbnail-container"><img src="${p.img}"><div class="save-badge" onclick="event.stopPropagation(); saveMatch('${p.id}', '${p.titolo}', '${p.img}')">SALVA</div></div>
+                <div class="card-title">${p.titolo}</div>
+            </div>`).join('');
+
+        function toggleSearch() { 
+            const s = document.getElementById('search-bar-container'); 
+            s.style.display = s.style.display === 'block' ? 'none' : 'block'; 
+            if(s.style.display === 'block') document.getElementById('search-input').focus();
+        }
+        function openNav() { document.getElementById("mySidebar").style.width = "280px"; }
         function closeNav() { document.getElementById("mySidebar").style.width = "0"; }
-        
-        function sendMatch(id) {
-            tg.sendData(id);
+        function toggleDropdown(id) {
+            const d = document.getElementById(id);
+            d.style.display = d.style.display === "block" ? "none" : "block";
         }
     </script>
 </body>
