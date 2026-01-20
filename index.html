@@ -40,22 +40,47 @@
         .player-score { font-size: 50px; font-weight: 900; color: #a855f7; margin-bottom: 5px; letter-spacing: -2px; }
         .player-date { font-size: 22px; color: #888; margin-bottom: 30px; font-weight: 600; }
         .watch-btn { width: 100%; background: #fff; color: #000; border: none; padding: 18px; border-radius: 15px; font-size: 20px; font-weight: 800; cursor: pointer; }
-        .back-btn-player { position: absolute; top: 20px; left: 20px; background: rgba(0,0,0,0.7); color: white; border: none; width: 45px; height: 45px; border-radius: 50%; font-size: 20px; z-index: 710; display: flex; align-items: center; justify-content: center; }
+        
+        /* Modifica tasto Torna Indietro */
+        .back-btn-player { 
+            position: absolute; top: 20px; left: 20px; 
+            background: rgba(255, 255, 255, 0.2); 
+            backdrop-filter: blur(10px);
+            color: white; border: 1px solid rgba(255,255,255,0.3); 
+            padding: 8px 15px; border-radius: 8px; 
+            font-size: 14px; font-weight: bold; z-index: 710; 
+            cursor: pointer;
+        }
 
         /* --- LAYOUT --- */
         .page { display: none; min-height: 100vh; padding-bottom: 50px; }
         .active-page { display: block; }
         .section-title { padding: 20px 15px 5px; font-size: 22px; font-weight: bold; display: flex; justify-content: space-between; align-items: center; }
-        .horizontal-scroll { display: flex; overflow-x: auto; padding: 10px 15px; gap: 20px; scrollbar-width: none; }
+
+        /* --- SCROLLBARS PERSONALIZZATE --- */
+        .horizontal-scroll { 
+            display: flex; 
+            overflow-x: auto; 
+            padding: 10px 15px 25px; 
+            gap: 20px; 
+            -webkit-overflow-scrolling: touch; 
+            scrollbar-width: thin; 
+            scrollbar-color: #a855f7 #1c1c1c; 
+        }
+
+        .horizontal-scroll::-webkit-scrollbar { height: 6px; }
+        .horizontal-scroll::-webkit-scrollbar-track { background: #1c1c1c; border-radius: 10px; margin: 0 15px; }
+        .horizontal-scroll::-webkit-scrollbar-thumb { background: #a855f7; border-radius: 10px; }
+
         .card { min-width: 240px; cursor: pointer; position: relative; }
         .thumbnail-container { position: relative; width: 100%; aspect-ratio: 16/9; border-radius: 15px; overflow: hidden; background: #1c1c1c; }
         .thumbnail-container img { width: 100%; height: 100%; object-fit: cover; }
         .save-badge { position: absolute; top: 10px; right: 10px; background: #a855f7; padding: 6px 12px; border-radius: 8px; font-size: 11px; font-weight: bold; z-index: 10; }
         .card-title { margin-top: 12px; font-size: 16px; font-weight: 700; }
 
-        /* --- CRONOLOGIA E SALVATI GRID (2x2) --- */
+        /* --- GRIDS --- */
         .history-grid, .saved-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 15px; }
-        .history-grid .card, .saved-grid .card { min-width: unset; } /* Rimuove il min-width per la griglia */
+        .history-grid .card, .saved-grid .card { min-width: unset; }
 
         /* --- SLIDER --- */
         .slider-container { position: relative; width: 100%; height: 350px; overflow: hidden; }
@@ -65,12 +90,10 @@
         .progress-container { position: absolute; bottom: 0; width: 100%; height: 4px; background: rgba(255,255,255,0.1); }
         .progress-bar { height: 100%; width: 0; background: #a855f7; }
 
-        /* --- MESSAGGI VUOTI --- */
         .empty-message { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; color: #555; height: 70vh; padding: 20px; }
         .empty-message h2 { font-size: 30px; color: #888; margin-bottom: 10px; }
         .home-btn { background: #a855f7; color: white; border: none; padding: 12px 30px; border-radius: 30px; font-weight: bold; font-size: 16px; cursor: pointer; margin-top: 20px; }
         .clear-btn { display: block; width: 80%; margin: 30px auto; background: none; border: 1px solid #444; color: #888; padding: 12px; border-radius: 10px; font-weight: bold; }
-
     </style>
 </head>
 <body>
@@ -152,7 +175,7 @@
     </div>
 
     <div id="player-page">
-        <button class="back-btn-player" onclick="closePlayer()">✕</button>
+        <button class="back-btn-player" onclick="closePlayer()">TORNA INDIETRO</button>
         <img id="p-img" class="player-cover" src="">
         <div class="player-content">
             <div id="p-cat" class="p-cat-tag">CATEGORIA</div>
@@ -197,8 +220,7 @@
 
         function startVideo() { 
             const match = DB_PARTITE.find(p => p.id === currentMatchId);
-            if(match) addToHistory(match); // Salva in cronologia quando si preme GUARDA
-
+            if(match) addToHistory(match); 
             tg.sendData(currentMatchId); 
             tg.HapticFeedback.impactOccurred('heavy');
             setTimeout(() => { tg.close(); }, 150); 
@@ -213,40 +235,27 @@
             window.scrollTo(0,0);
         }
 
-        // --- CRONOLOGIA LOGIC ---
         function addToHistory(match) {
             let history = JSON.parse(localStorage.getItem('hidros_history') || '[]');
-            history = history.filter(m => m.id !== match.id); // Rimuove se già presente per portarlo in cima
+            history = history.filter(m => m.id !== match.id);
             history.unshift(match);
-            localStorage.setItem('hidros_history', JSON.stringify(history.slice(0, 20))); // Max 20 video
+            localStorage.setItem('hidros_history', JSON.stringify(history.slice(0, 20)));
         }
 
         function showHistoryPage() {
             showPage('history-page');
             const history = JSON.parse(localStorage.getItem('hidros_history') || '[]');
             const container = document.getElementById('history-content');
-
             if (history.length === 0) {
-                container.innerHTML = `
-                    <div class="empty-message">
-                        <h2>Cronologia vuota</h2>
-                        <p>I video che guarderai appariranno qui</p>
-                        <button class="home-btn" onclick="showPage('home')">Inizia a guardare</button>
-                    </div>`;
+                container.innerHTML = `<div class="empty-message"><h2>Cronologia vuota</h2><button class="home-btn" onclick="showPage('home')">Inizia a guardare</button></div>`;
             } else {
                 let html = `<div class="section-title">Visti di recente</div><div class="history-grid">`;
-                history.forEach(m => {
-                    html += `<div class="card" onclick="openMatch('${m.id}')">
-                                <div class="thumbnail-container"><img src="${m.img}"></div>
-                                <div class="card-title">${m.titolo}</div>
-                             </div>`;
-                });
+                history.forEach(m => { html += `<div class="card" onclick="openMatch('${m.id}')"><div class="thumbnail-container"><img src="${m.img}"></div><div class="card-title">${m.titolo}</div></div>`; });
                 html += `</div><button class="clear-btn" onclick="localStorage.removeItem('hidros_history'); showHistoryPage();">Cancella cronologia</button>`;
                 container.innerHTML = html;
             }
         }
 
-        // --- SALVATI LOGIC ---
         function saveMatch(id, title, img) {
             let saved = JSON.parse(localStorage.getItem('hidros_saved') || '[]');
             if (!saved.find(m => m.id === id)) {
@@ -260,51 +269,28 @@
             showPage('saved-page');
             const saved = JSON.parse(localStorage.getItem('hidros_saved') || '[]');
             const container = document.getElementById('saved-content');
-            
             if (saved.length === 0) {
-                container.innerHTML = `
-                    <div class="empty-message">
-                        <h2>Nessuna partita salvata</h2>
-                        <p>Le partite salvate appariranno qui</p>
-                        <button class="home-btn" onclick="showPage('home')">Torna alla Home</button>
-                    </div>`;
+                container.innerHTML = `<div class="empty-message"><h2>Nessuna partita salvata</h2><button class="home-btn" onclick="showPage('home')">Torna alla Home</button></div>`;
             } else {
                 let html = `<div class="section-title">I tuoi Segnalibri</div><div class="saved-grid">`;
-                saved.forEach(m => {
-                    html += `<div class="card" onclick="openMatch('${m.id}')">
-                                <div class="thumbnail-container"><img src="${m.img}"></div>
-                                <div class="card-title">${m.title}</div>
-                             </div>`;
-                });
+                saved.forEach(m => { html += `<div class="card" onclick="openMatch('${m.id}')"><div class="thumbnail-container"><img src="${m.img}"></div><div class="card-title">${m.title}</div></div>`; });
                 html += `</div><button class="clear-btn" onclick="localStorage.removeItem('hidros_saved'); showSavedPage();">Svuota tutto</button>`;
                 container.innerHTML = html;
             }
         }
 
-        // --- SEARCH & NAV ---
         function handleSearch(val) {
             const res = document.getElementById('search-results');
             if(!val) { res.innerHTML = ''; return; }
             const filtered = DB_PARTITE.filter(p => p.titolo.toLowerCase().includes(val.toLowerCase()) || p.cat.toLowerCase().includes(val.toLowerCase()));
-            res.innerHTML = filtered.map(p => `
-                <div class="search-result-item" onclick="openMatch('${p.id}')">
-                    <img src="${p.img}" class="search-thumb">
-                    <div class="search-info"><b>${p.titolo}</b><div>${p.cat}</div></div>
-                </div>`).join('');
+            res.innerHTML = filtered.map(p => `<div class="search-result-item" onclick="openMatch('${p.id}')"><img src="${p.img}" class="search-thumb"><div class="search-info"><b>${p.titolo}</b><div>${p.cat}</div></div></div>`).join('');
         }
 
         function openCategory(nome) {
             showPage('category-page');
             document.getElementById('cat-all-title').innerText = "Tutte le partite " + nome;
-            document.getElementById('catSlider').innerHTML = `
-                <div class="slide" style="background-image: url('screenshot.png');" onclick="openMatch('1')">
-                    <div class="slide-info"><div class="p-cat-tag">IN EVIDENZA</div><div class="slide-title">Il meglio di ${nome}</div></div>
-                </div>`;
-            document.getElementById('cat-all-list').innerHTML = DB_PARTITE.map(p => `
-                <div class="card" onclick="openMatch('${p.id}')">
-                    <div class="thumbnail-container"><img src="${p.img}"><div class="save-badge" onclick="event.stopPropagation(); saveMatch('${p.id}', '${p.titolo}', '${p.img}')">SALVA</div></div>
-                    <div class="card-title">${p.titolo}</div>
-                </div>`).join('');
+            document.getElementById('catSlider').innerHTML = `<div class="slide" style="background-image: url('screenshot.png');" onclick="openMatch('1')"><div class="slide-info"><div class="p-cat-tag">IN EVIDENZA</div><div class="slide-title">Il meglio di ${nome}</div></div></div>`;
+            document.getElementById('cat-all-list').innerHTML = DB_PARTITE.map(p => `<div class="card" onclick="openMatch('${p.id}')"><div class="thumbnail-container"><img src="${p.img}"><div class="save-badge" onclick="event.stopPropagation(); saveMatch('${p.id}', '${p.titolo}', '${p.img}')">SALVA</div></div><div class="card-title">${p.titolo}</div></div>`).join('');
         }
 
         function animate() {
@@ -319,10 +305,7 @@
                     bar.style.width = Math.min((elapsed/5000)*100, 100) + "%";
                     if(elapsed >= 5000) {
                         const slides = slider.querySelectorAll('.slide');
-                        if(slides.length > 1) {
-                            sliders[k].idx = (sliders[k].idx + 1) % slides.length;
-                            slider.style.transform = `translateX(-${sliders[k].idx*100}%)`;
-                        }
+                        if(slides.length > 1) { sliders[k].idx = (sliders[k].idx + 1) % slides.length; slider.style.transform = `translateX(-${sliders[k].idx*100}%)`; }
                         sliders[k].start = Date.now();
                     }
                 }
@@ -331,24 +314,12 @@
         }
         animate();
 
-        // INIT
-        document.getElementById('latest-matches').innerHTML = DB_PARTITE.map(p => `
-            <div class="card" onclick="openMatch('${p.id}')">
-                <div class="thumbnail-container"><img src="${p.img}"><div class="save-badge" onclick="event.stopPropagation(); saveMatch('${p.id}', '${p.titolo}', '${p.img}')">SALVA</div></div>
-                <div class="card-title">${p.titolo}</div>
-            </div>`).join('');
+        document.getElementById('latest-matches').innerHTML = DB_PARTITE.map(p => `<div class="card" onclick="openMatch('${p.id}')"><div class="thumbnail-container"><img src="${p.img}"><div class="save-badge" onclick="event.stopPropagation(); saveMatch('${p.id}', '${p.titolo}', '${p.img}')">SALVA</div></div><div class="card-title">${p.titolo}</div></div>`).join('');
 
-        function toggleSearch() { 
-            const s = document.getElementById('search-bar-container'); 
-            s.style.display = s.style.display === 'block' ? 'none' : 'block'; 
-            if(s.style.display === 'block') document.getElementById('search-input').focus();
-        }
+        function toggleSearch() { const s = document.getElementById('search-bar-container'); s.style.display = s.style.display === 'block' ? 'none' : 'block'; if(s.style.display === 'block') document.getElementById('search-input').focus(); }
         function openNav() { document.getElementById("mySidebar").style.width = "280px"; }
         function closeNav() { document.getElementById("mySidebar").style.width = "0"; }
-        function toggleDropdown(id) {
-            const d = document.getElementById(id);
-            d.style.display = d.style.display === "block" ? "none" : "block";
-        }
+        function toggleDropdown(id) { const d = document.getElementById(id); d.style.display = d.style.display === "block" ? "none" : "block"; }
     </script>
 </body>
 </html>
