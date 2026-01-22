@@ -73,11 +73,8 @@
         .card { min-width: 240px; cursor: pointer; position: relative; }
         .thumbnail-container { position: relative; width: 100%; aspect-ratio: 16/9; border-radius: 15px; overflow: hidden; background: #1c1c1c; }
         .thumbnail-container img { width: 100%; height: 100%; object-fit: cover; }
-        
-        /* Stile per il tag dinamico sulla figurina */
         .info-badge { position: absolute; top: 10px; left: 10px; background: rgba(0,0,0,0.7); padding: 4px 8px; border-radius: 5px; font-size: 10px; font-weight: bold; border: 1px solid #a855f7; z-index: 10; }
         .save-badge { position: absolute; top: 10px; right: 10px; background: #a855f7; padding: 6px 12px; border-radius: 8px; font-size: 11px; font-weight: bold; z-index: 10; }
-        
         .card-title { margin-top: 12px; font-size: 16px; font-weight: 700; }
 
         .history-grid, .saved-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 15px; }
@@ -187,7 +184,6 @@
         let sliders = { home: { idx: 0, start: Date.now() }, cat: { idx: 0, start: Date.now() } };
 
         function initApp() {
-            // Genera Slider Home (prime 2)
             const sliderHome = document.getElementById('homeSlider');
             sliderHome.innerHTML = DB_PARTITE.slice(0, 2).map(p => `
                 <div class="slide" style="background-image: url('${p.img}');" onclick="openMatch('${p.id}')">
@@ -198,7 +194,6 @@
                 </div>
             `).join('');
 
-            // Genera lista figurine Home
             document.getElementById('latest-matches').innerHTML = DB_PARTITE.map(p => `
                 <div class="card" onclick="openMatch('${p.id}')">
                     <div class="thumbnail-container">
@@ -297,19 +292,23 @@
             res.innerHTML = filtered.map(p => `<div class="search-result-item" onclick="openMatch('${p.id}')"><img src="${p.img}" class="search-thumb"><div class="search-info"><b>${p.titolo}</b><div>${p.cat}</div></div></div>`).join('');
         }
 
+        // --- FUNZIONE CORRETTA ---
         function openCategory(nome) {
             showPage('category-page');
             document.getElementById('cat-all-title').innerText = "Tutte le partite " + nome;
             const catMatches = DB_PARTITE.filter(p => p.cat === nome);
             
+            const slider = document.getElementById('catSlider');
             if(catMatches.length > 0) {
-                document.getElementById('catSlider').innerHTML = `
+                slider.innerHTML = `
                 <div class="slide" style="background-image: url('${catMatches[0].img}');" onclick="openMatch('${catMatches[0].id}')">
                     <div class="slide-info">
                         <div class="p-cat-tag">${catMatches[0].tag || 'IN EVIDENZA'}</div>
                         <div class="slide-title">Il meglio di ${nome}</div>
                     </div>
                 </div>`;
+            } else {
+                slider.innerHTML = `<div class="slide"><div class="slide-info"><div class="slide-title">Nessuna partita per ${nome}</div></div></div>`;
             }
 
             document.getElementById('cat-all-list').innerHTML = catMatches.map(p => `
