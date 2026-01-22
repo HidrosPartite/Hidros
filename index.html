@@ -9,10 +9,38 @@
     <style>
         body { margin: 0; padding: 0; background-color: #000; color: #fff; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; overflow-x: hidden; }
 
-        /* --- SIDEBAR --- */
-        .sidebar { height: 100%; width: 0; position: fixed; z-index: 600; top: 0; left: 0; background-color: #111; overflow-x: hidden; transition: 0.3s; padding-top: 60px; }
-        .sidebar a, .dropdown-btn { padding: 15px 25px; text-decoration: none; font-size: 18px; color: #ccc; display: block; border: none; background: none; width: 100%; text-align: left; cursor: pointer; outline: none; font-family: inherit; }
-        .sidebar .closebtn { position: absolute; top: 10px; right: 25px; font-size: 36px; }
+        /* --- SIDEBAR: FIX DEFINITIVO PER PC E MOBILE --- */
+        .sidebar { 
+            height: 100vh; /* Forza l'altezza pari allo schermo */
+            width: 0; 
+            position: fixed; 
+            z-index: 600; 
+            top: 0; 
+            left: 0; 
+            background-color: #111; 
+            overflow-x: hidden; 
+            overflow-y: scroll; /* Forza la presenza dello scroll verticale */
+            transition: 0.3s; 
+            padding-top: 60px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Crea un distanziatore invisibile in fondo per permettere di scorrere oltre la Serie C */
+        .sidebar::after {
+            content: "";
+            min-height: 150px;
+            display: block;
+            width: 100%;
+        }
+
+        /* Stile Scrollbar per PC */
+        .sidebar::-webkit-scrollbar { width: 8px; }
+        .sidebar::-webkit-scrollbar-thumb { background: #a855f7; border-radius: 10px; }
+        .sidebar::-webkit-scrollbar-track { background: #111; }
+
+        .sidebar a, .dropdown-btn { padding: 15px 25px; text-decoration: none; font-size: 18px; color: #ccc; display: block; border: none; background: none; width: 100%; text-align: left; cursor: pointer; outline: none; font-family: inherit; flex-shrink: 0; }
+        .sidebar .closebtn { position: absolute; top: 10px; right: 25px; font-size: 36px; z-index: 610; }
         .dropdown-container { display: none; background-color: #1a1a1a; }
         .sub-container { background-color: #222 !important; padding-left: 20px; }
         .caret { font-size: 12px; float: right; margin-top: 5px; }
@@ -97,7 +125,7 @@
 
     <div id="mySidebar" class="sidebar">
         <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
-        <div style="padding: 0 25px 20px; font-weight: bold; color: #a855f7; font-size: 24px;">HIDROS</div>
+        <div style="padding: 0 25px 20px; font-weight: bold; color: #a855f7; font-size: 24px; flex-shrink: 0;">HIDROS</div>
         <a href="#" onclick="showPage('home')"><img src="PNG/HomeMenu.png" style="width: 20px; vertical-align: middle; margin-right: 10px;"> Home</a>
         <button class="dropdown-btn" onclick="toggleDropdown('tournaments')"> <img src="PNG/Trofeo.png" style="width: 20px; vertical-align: middle; margin-right: 10px;"> Tutti i Tornei <span class="caret">▼</span></button>
         <div class="dropdown-container" id="tournaments">
@@ -185,25 +213,30 @@
 
         function initApp() {
             const sliderHome = document.getElementById('homeSlider');
-            sliderHome.innerHTML = DB_PARTITE.slice(0, 2).map(p => `
-                <div class="slide" style="background-image: url('${p.img}');" onclick="openMatch('${p.id}')">
-                    <div class="slide-info">
-                        <div class="p-cat-tag">${p.tag || 'MATCH'}</div>
-                        <div class="slide-title">${p.titolo}</div>
+            if(sliderHome) {
+                sliderHome.innerHTML = DB_PARTITE.slice(0, 2).map(p => `
+                    <div class="slide" style="background-image: url('${p.img}');" onclick="openMatch('${p.id}')">
+                        <div class="slide-info">
+                            <div class="p-cat-tag">${p.tag || 'MATCH'}</div>
+                            <div class="slide-title">${p.titolo}</div>
+                        </div>
                     </div>
-                </div>
-            `).join('');
+                `).join('');
+            }
 
-            document.getElementById('latest-matches').innerHTML = DB_PARTITE.map(p => `
-                <div class="card" onclick="openMatch('${p.id}')">
-                    <div class="thumbnail-container">
-                        <img src="${p.img}">
-                        <div class="info-badge">${p.tag || 'MATCH'}</div>
-                        <div class="save-badge" onclick="event.stopPropagation(); saveMatch('${p.id}', '${p.titolo}', '${p.img}')">SALVA</div>
+            const latestList = document.getElementById('latest-matches');
+            if(latestList) {
+                latestList.innerHTML = DB_PARTITE.map(p => `
+                    <div class="card" onclick="openMatch('${p.id}')">
+                        <div class="thumbnail-container">
+                            <img src="${p.img}">
+                            <div class="info-badge">${p.tag || 'MATCH'}</div>
+                            <div class="save-badge" onclick="event.stopPropagation(); saveMatch('${p.id}', '${p.titolo}', '${p.img}')">SALVA</div>
+                        </div>
+                        <div class="card-title">${p.titolo}</div>
                     </div>
-                    <div class="card-title">${p.titolo}</div>
-                </div>
-            `).join('');
+                `).join('');
+            }
         }
 
         function openMatch(id) {
@@ -292,7 +325,6 @@
             res.innerHTML = filtered.map(p => `<div class="search-result-item" onclick="openMatch('${p.id}')"><img src="${p.img}" class="search-thumb"><div class="search-info"><b>${p.titolo}</b><div>${p.cat}</div></div></div>`).join('');
         }
 
-        // --- FUNZIONE CORRETTA ---
         function openCategory(nome) {
             showPage('category-page');
             document.getElementById('cat-all-title').innerText = "Tutte le partite " + nome;
