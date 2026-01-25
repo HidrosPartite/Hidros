@@ -240,7 +240,6 @@
         function initApp() {
             const sliderHome = document.getElementById('homeSlider');
             if(sliderHome) {
-                // Filtra le partite che hanno sliderHome: 'si'
                 const homeSlides = DB_PARTITE.filter(p => p.sliderHome === 'si');
                 sliderHome.innerHTML = homeSlides.map(p => `
                     <div class="slide" style="background-image: url('${p.img}');" onclick="openMatch('${p.id}', 'partite')">
@@ -254,7 +253,9 @@
 
             const latestList = document.getElementById('latest-matches');
             if(latestList) {
-                latestList.innerHTML = DB_PARTITE.map(p => `
+                // FILTRO HomeRecenti
+                const homeRecentMatches = DB_PARTITE.filter(p => p.HomeRecenti === 'si');
+                latestList.innerHTML = homeRecentMatches.map(p => `
                     <div class="card" onclick="openMatch('${p.id}', 'partite')">
                         <div class="thumbnail-container">
                             <img src="${p.img}">
@@ -269,7 +270,6 @@
 
         function openHighlights() {
             showPage('highlights-page');
-            // Filtra gli highlights che hanno slider: 'si'
             const highSlides = DB_HIGHLIGHTS.filter(p => p.slider === 'si');
             document.getElementById('highSlider').innerHTML = highSlides.map(p => `
                 <div class="slide" style="background-image: url('${p.img}');" onclick="openMatch('${p.id}', 'highlights')">
@@ -294,8 +294,6 @@
             showPage('category-page');
             document.getElementById('cat-all-title').innerText = "Tutte le partite " + nome;
             const catMatches = DB_PARTITE.filter(p => p.cat === nome);
-            
-            // Filtra le partite della categoria che hanno sliderCat: 'si'
             const catSlides = catMatches.filter(p => p.sliderCat === 'si');
             const slider = document.getElementById('catSlider');
             
