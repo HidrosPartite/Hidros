@@ -6,12 +6,15 @@
     <title>Hidros | Archivio Volley</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="partite.js"></script>
+    <script src="highlights.js"></script>
+    <script src="shorts.js"></script>
+
     <style>
         body { margin: 0; padding: 0; background-color: #000; color: #fff; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; overflow-x: hidden; }
 
         /* --- SIDEBAR: FIX DEFINITIVO PER PC E MOBILE --- */
         .sidebar { 
-            height: 100vh; /* Forza l'altezza pari allo schermo */
+            height: 100vh; 
             width: 0; 
             position: fixed; 
             z-index: 600; 
@@ -19,14 +22,13 @@
             left: 0; 
             background-color: #111; 
             overflow-x: hidden; 
-            overflow-y: scroll; /* Forza la presenza dello scroll verticale */
+            overflow-y: scroll; 
             transition: 0.3s; 
             padding-top: 60px;
             display: flex;
             flex-direction: column;
         }
 
-        /* Crea un distanziatore invisibile in fondo per permettere di scorrere oltre la Serie C */
         .sidebar::after {
             content: "";
             min-height: 150px;
@@ -34,7 +36,6 @@
             width: 100%;
         }
 
-        /* Stile Scrollbar per PC */
         .sidebar::-webkit-scrollbar { width: 8px; }
         .sidebar::-webkit-scrollbar-thumb { background: #a855f7; border-radius: 10px; }
         .sidebar::-webkit-scrollbar-track { background: #111; }
@@ -59,6 +60,12 @@
         .search-result-item { display: flex; align-items: center; padding: 10px; border-bottom: 1px solid #222; gap: 15px; cursor: pointer; }
         .search-thumb { width: 100px; aspect-ratio: 16/9; border-radius: 5px; object-fit: cover; }
         .search-info b { font-size: 14px; color: #fff; }
+
+        /* --- GRID STILE SHORTS (Instagram) --- */
+        .insta-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; padding: 2px; }
+        .insta-item { aspect-ratio: 9/16; position: relative; overflow: hidden; cursor: pointer; }
+        .insta-item img { width: 100%; height: 100%; object-fit: cover; }
+        .insta-badge { position: absolute; bottom: 5px; left: 5px; background: rgba(168, 85, 247, 0.9); color: white; font-size: 9px; padding: 2px 5px; border-radius: 4px; font-weight: bold; }
 
         /* --- PLAYER PAGE --- */
         #player-page { background-color: #000; z-index: 700; position: fixed; top: 0; left: 0; width: 100%; height: 100%; overflow-y: auto; display: none; }
@@ -127,6 +134,10 @@
         <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
         <div style="padding: 0 25px 20px; font-weight: bold; color: #a855f7; font-size: 24px; flex-shrink: 0;">HIDROS</div>
         <a href="#" onclick="showPage('home')"><img src="PNG/HomeMenu.png" style="width: 20px; vertical-align: middle; margin-right: 10px;"> Home</a>
+        
+        <a href="#" onclick="openHighlights()"><img src="PNG/Trofeo.png" style="width: 20px; vertical-align: middle; margin-right: 10px;"> Highlights</a>
+        <a href="#" onclick="openShorts()"><img src="PNG/Trofeo.png" style="width: 20px; vertical-align: middle; margin-right: 10px;"> Shorts</a>
+
         <button class="dropdown-btn" onclick="toggleDropdown('tournaments')"> <img src="PNG/Trofeo.png" style="width: 20px; vertical-align: middle; margin-right: 10px;"> Tutti i Tornei <span class="caret">▼</span></button>
         <div class="dropdown-container" id="tournaments">
             <button class="dropdown-btn" onclick="toggleDropdown('u14')">Under 14 <span class="caret">▼</span></button>
@@ -174,6 +185,21 @@
         <div class="horizontal-scroll" id="latest-matches"></div>
     </div>
 
+    <div id="highlights-page" class="page">
+        <div class="section-title">Highlights in evidenza</div>
+        <div class="slider-container">
+            <div class="slider" id="highSlider"></div>
+            <div class="progress-container"><div class="progress-bar" id="highProgressBar"></div></div>
+        </div>
+        <div class="section-title">Tutti gli Highlights</div>
+        <div class="horizontal-scroll" id="high-list"></div>
+    </div>
+
+    <div id="shorts-page" class="page">
+        <div class="section-title">Hidros Shorts</div>
+        <div class="insta-grid" id="shorts-grid"></div>
+    </div>
+
     <div id="category-page" class="page">
         <div class="section-title">Partite da non perdere</div>
         <div class="slider-container">
@@ -209,13 +235,15 @@
         tg.expand();
 
         let currentMatchId = '';
-        let sliders = { home: { idx: 0, start: Date.now() }, cat: { idx: 0, start: Date.now() } };
+        let sliders = { home: { idx: 0, start: Date.now() }, cat: { idx: 0, start: Date.now() }, high: { idx: 0, start: Date.now() } };
 
         function initApp() {
             const sliderHome = document.getElementById('homeSlider');
             if(sliderHome) {
-                sliderHome.innerHTML = DB_PARTITE.slice(0, 2).map(p => `
-                    <div class="slide" style="background-image: url('${p.img}');" onclick="openMatch('${p.id}')">
+                // Filtra le partite che hanno sliderHome: 'si'
+                const homeSlides = DB_PARTITE.filter(p => p.sliderHome === 'si');
+                sliderHome.innerHTML = homeSlides.map(p => `
+                    <div class="slide" style="background-image: url('${p.img}');" onclick="openMatch('${p.id}', 'partite')">
                         <div class="slide-info">
                             <div class="p-cat-tag">${p.tag || 'MATCH'}</div>
                             <div class="slide-title">${p.titolo}</div>
@@ -227,7 +255,7 @@
             const latestList = document.getElementById('latest-matches');
             if(latestList) {
                 latestList.innerHTML = DB_PARTITE.map(p => `
-                    <div class="card" onclick="openMatch('${p.id}')">
+                    <div class="card" onclick="openMatch('${p.id}', 'partite')">
                         <div class="thumbnail-container">
                             <img src="${p.img}">
                             <div class="info-badge">${p.tag || 'MATCH'}</div>
@@ -239,12 +267,81 @@
             }
         }
 
-        function openMatch(id) {
-            const match = DB_PARTITE.find(p => p.id === id);
+        function openHighlights() {
+            showPage('highlights-page');
+            // Filtra gli highlights che hanno slider: 'si'
+            const highSlides = DB_HIGHLIGHTS.filter(p => p.slider === 'si');
+            document.getElementById('highSlider').innerHTML = highSlides.map(p => `
+                <div class="slide" style="background-image: url('${p.img}');" onclick="openMatch('${p.id}', 'highlights')">
+                    <div class="slide-info">
+                        <div class="p-cat-tag">${p.cat}</div>
+                        <div class="slide-title">${p.titolo}</div>
+                    </div>
+                </div>`).join('');
+
+            document.getElementById('high-list').innerHTML = DB_HIGHLIGHTS.map(p => `
+                <div class="card" onclick="openMatch('${p.id}', 'highlights')">
+                    <div class="thumbnail-container">
+                        <img src="${p.img}">
+                        <div class="info-badge">${p.cat}</div>
+                    </div>
+                    <div class="card-title">${p.titolo}</div>
+                </div>`).join('');
+            sliders.high.start = Date.now();
+        }
+
+        function openCategory(nome) {
+            showPage('category-page');
+            document.getElementById('cat-all-title').innerText = "Tutte le partite " + nome;
+            const catMatches = DB_PARTITE.filter(p => p.cat === nome);
+            
+            // Filtra le partite della categoria che hanno sliderCat: 'si'
+            const catSlides = catMatches.filter(p => p.sliderCat === 'si');
+            const slider = document.getElementById('catSlider');
+            
+            if(catSlides.length > 0) {
+                slider.innerHTML = catSlides.map(p => `
+                <div class="slide" style="background-image: url('${p.img}');" onclick="openMatch('${p.id}', 'partite')">
+                    <div class="slide-info">
+                        <div class="p-cat-tag">${p.tag || 'IN EVIDENZA'}</div>
+                        <div class="slide-title">${p.titolo}</div>
+                    </div>
+                </div>`).join('');
+            } else {
+                slider.innerHTML = `<div class="slide"><div class="slide-info"><div class="slide-title">Nessun match in evidenza per ${nome}</div></div></div>`;
+            }
+
+            document.getElementById('cat-all-list').innerHTML = catMatches.map(p => `
+                <div class="card" onclick="openMatch('${p.id}', 'partite')">
+                    <div class="thumbnail-container">
+                        <img src="${p.img}">
+                        <div class="info-badge">${p.tag || 'MATCH'}</div>
+                        <div class="save-badge" onclick="event.stopPropagation(); saveMatch('${p.id}', '${p.titolo}', '${p.img}')">SALVA</div>
+                    </div>
+                    <div class="card-title">${p.titolo}</div>
+                </div>
+            `).join('');
+        }
+
+        function openShorts() {
+            showPage('shorts-page');
+            document.getElementById('shorts-grid').innerHTML = DB_SHORTS.map(p => `
+                <div class="insta-item" onclick="openMatch('${p.id}', 'shorts')">
+                    <img src="${p.img}">
+                    <div class="insta-badge">${p.cat}</div>
+                </div>`).join('');
+        }
+
+        function openMatch(id, dbType = 'partite') {
+            let db = DB_PARTITE;
+            if(dbType === 'highlights') db = DB_HIGHLIGHTS;
+            if(dbType === 'shorts') db = DB_SHORTS;
+
+            const match = db.find(p => p.id === id);
             if(!match) return;
             document.getElementById('p-img').src = match.img;
             document.getElementById('p-title').innerText = match.titolo;
-            document.getElementById('p-score').innerText = match.punteggio;
+            document.getElementById('p-score').innerText = match.punteggio || "";
             document.getElementById('p-cat').innerText = match.cat.toUpperCase();
             document.getElementById('p-date').innerText = match.anno;
             document.getElementById('player-page').style.display = 'block';
@@ -258,7 +355,8 @@
         }
 
         function startVideo() { 
-            const match = DB_PARTITE.find(p => p.id === currentMatchId);
+            const allDbs = [...DB_PARTITE, ...DB_HIGHLIGHTS, ...DB_SHORTS];
+            const match = allDbs.find(p => p.id === currentMatchId);
             if(match) addToHistory(match); 
             tg.sendData(currentMatchId); 
             tg.HapticFeedback.impactOccurred('heavy');
@@ -321,44 +419,16 @@
         function handleSearch(val) {
             const res = document.getElementById('search-results');
             if(!val) { res.innerHTML = ''; return; }
-            const filtered = DB_PARTITE.filter(p => p.titolo.toLowerCase().includes(val.toLowerCase()) || p.cat.toLowerCase().includes(val.toLowerCase()));
+            const allDbs = [...DB_PARTITE, ...DB_HIGHLIGHTS, ...DB_SHORTS];
+            const filtered = allDbs.filter(p => p.titolo.toLowerCase().includes(val.toLowerCase()) || p.cat.toLowerCase().includes(val.toLowerCase()));
             res.innerHTML = filtered.map(p => `<div class="search-result-item" onclick="openMatch('${p.id}')"><img src="${p.img}" class="search-thumb"><div class="search-info"><b>${p.titolo}</b><div>${p.cat}</div></div></div>`).join('');
         }
 
-        function openCategory(nome) {
-            showPage('category-page');
-            document.getElementById('cat-all-title').innerText = "Tutte le partite " + nome;
-            const catMatches = DB_PARTITE.filter(p => p.cat === nome);
-            
-            const slider = document.getElementById('catSlider');
-            if(catMatches.length > 0) {
-                slider.innerHTML = `
-                <div class="slide" style="background-image: url('${catMatches[0].img}');" onclick="openMatch('${catMatches[0].id}')">
-                    <div class="slide-info">
-                        <div class="p-cat-tag">${catMatches[0].tag || 'IN EVIDENZA'}</div>
-                        <div class="slide-title">Il meglio di ${nome}</div>
-                    </div>
-                </div>`;
-            } else {
-                slider.innerHTML = `<div class="slide"><div class="slide-info"><div class="slide-title">Nessuna partita per ${nome}</div></div></div>`;
-            }
-
-            document.getElementById('cat-all-list').innerHTML = catMatches.map(p => `
-                <div class="card" onclick="openMatch('${p.id}')">
-                    <div class="thumbnail-container">
-                        <img src="${p.img}">
-                        <div class="info-badge">${p.tag || 'MATCH'}</div>
-                        <div class="save-badge" onclick="event.stopPropagation(); saveMatch('${p.id}', '${p.titolo}', '${p.img}')">SALVA</div>
-                    </div>
-                    <div class="card-title">${p.titolo}</div>
-                </div>
-            `).join('');
-        }
-
         function animate() {
-            const keys = ['home', 'cat'];
+            const keys = ['home', 'cat', 'high'];
             keys.forEach(k => {
-                const p = document.getElementById(k);
+                const pageId = (k === 'high') ? 'highlights-page' : k;
+                const p = document.getElementById(pageId);
                 if(p && p.classList.contains('active-page')) {
                     const bar = document.getElementById(k + 'ProgressBar');
                     const slider = document.getElementById(k + 'Slider');
