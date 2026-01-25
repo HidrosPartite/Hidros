@@ -12,34 +12,16 @@
     <style>
         body { margin: 0; padding: 0; background-color: #000; color: #fff; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; overflow-x: hidden; }
 
-        /* --- SIDEBAR: FIX DEFINITIVO PER PC E MOBILE --- */
+        /* --- SIDEBAR --- */
         .sidebar { 
-            height: 100vh; 
-            width: 0; 
-            position: fixed; 
-            z-index: 600; 
-            top: 0; 
-            left: 0; 
-            background-color: #111; 
-            overflow-x: hidden; 
-            overflow-y: scroll; 
-            transition: 0.3s; 
-            padding-top: 60px;
-            display: flex;
-            flex-direction: column;
+            height: 100vh; width: 0; position: fixed; z-index: 600; top: 0; left: 0; 
+            background-color: #111; overflow-x: hidden; overflow-y: scroll; transition: 0.3s; 
+            padding-top: 60px; display: flex; flex-direction: column;
         }
-
-        .sidebar::after {
-            content: "";
-            min-height: 150px;
-            display: block;
-            width: 100%;
-        }
-
+        .sidebar::after { content: ""; min-height: 150px; display: block; width: 100%; }
         .sidebar::-webkit-scrollbar { width: 8px; }
         .sidebar::-webkit-scrollbar-thumb { background: #a855f7; border-radius: 10px; }
         .sidebar::-webkit-scrollbar-track { background: #111; }
-
         .sidebar a, .dropdown-btn { padding: 15px 25px; text-decoration: none; font-size: 18px; color: #ccc; display: block; border: none; background: none; width: 100%; text-align: left; cursor: pointer; outline: none; font-family: inherit; flex-shrink: 0; }
         .sidebar .closebtn { position: absolute; top: 10px; right: 25px; font-size: 36px; z-index: 610; }
         .dropdown-container { display: none; background-color: #1a1a1a; }
@@ -61,7 +43,7 @@
         .search-thumb { width: 100px; aspect-ratio: 16/9; border-radius: 5px; object-fit: cover; }
         .search-info b { font-size: 14px; color: #fff; }
 
-        /* --- GRID STILE SHORTS (Instagram) --- */
+        /* --- GRID STILE SHORTS --- */
         .insta-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; padding: 2px; }
         .insta-item { aspect-ratio: 9/16; position: relative; overflow: hidden; cursor: pointer; }
         .insta-item img { width: 100%; height: 100%; object-fit: cover; }
@@ -76,31 +58,13 @@
         .player-score { font-size: 50px; font-weight: 900; color: #a855f7; margin-bottom: 5px; letter-spacing: -2px; }
         .player-date { font-size: 22px; color: #888; margin-bottom: 30px; font-weight: 600; }
         .watch-btn { width: 100%; background: #fff; color: #000; border: none; padding: 18px; border-radius: 15px; font-size: 20px; font-weight: 800; cursor: pointer; }
-        
-        .back-btn-player { 
-            position: absolute; top: 20px; left: 20px; 
-            background: rgba(255, 255, 255, 0.2); 
-            backdrop-filter: blur(10px);
-            color: white; border: 1px solid rgba(255,255,255,0.3); 
-            padding: 8px 15px; border-radius: 8px; 
-            font-size: 14px; font-weight: bold; z-index: 710; 
-            cursor: pointer;
-        }
+        .back-btn-player { position: absolute; top: 20px; left: 20px; background: rgba(255, 255, 255, 0.2); backdrop-filter: blur(10px); color: white; border: 1px solid rgba(255,255,255,0.3); padding: 8px 15px; border-radius: 8px; font-size: 14px; font-weight: bold; z-index: 710; cursor: pointer; }
 
         .page { display: none; min-height: 100vh; padding-bottom: 50px; }
         .active-page { display: block; }
         .section-title { padding: 20px 15px 5px; font-size: 22px; font-weight: bold; display: flex; justify-content: space-between; align-items: center; }
 
-        .horizontal-scroll { 
-            display: flex; 
-            overflow-x: auto; 
-            padding: 10px 15px 25px; 
-            gap: 20px; 
-            -webkit-overflow-scrolling: touch; 
-            scrollbar-width: thin; 
-            scrollbar-color: #a855f7 #1c1c1c; 
-        }
-
+        .horizontal-scroll { display: flex; overflow-x: auto; padding: 10px 15px 25px; gap: 20px; -webkit-overflow-scrolling: touch; scrollbar-width: thin; scrollbar-color: #a855f7 #1c1c1c; }
         .horizontal-scroll::-webkit-scrollbar { height: 6px; }
         .horizontal-scroll::-webkit-scrollbar-track { background: #1c1c1c; border-radius: 10px; margin: 0 15px; }
         .horizontal-scroll::-webkit-scrollbar-thumb { background: #a855f7; border-radius: 10px; }
@@ -134,10 +98,8 @@
         <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
         <div style="padding: 0 25px 20px; font-weight: bold; color: #a855f7; font-size: 24px; flex-shrink: 0;">HIDROS</div>
         <a href="#" onclick="showPage('home')"><img src="PNG/HomeMenu.png" style="width: 20px; vertical-align: middle; margin-right: 10px;"> Home</a>
-        
         <a href="#" onclick="openHighlights()"><img src="PNG/Trofeo.png" style="width: 20px; vertical-align: middle; margin-right: 10px;"> Highlights</a>
         <a href="#" onclick="openShorts()"><img src="PNG/Trofeo.png" style="width: 20px; vertical-align: middle; margin-right: 10px;"> Shorts</a>
-
         <button class="dropdown-btn" onclick="toggleDropdown('tournaments')"> <img src="PNG/Trofeo.png" style="width: 20px; vertical-align: middle; margin-right: 10px;"> Tutti i Tornei <span class="caret">▼</span></button>
         <div class="dropdown-container" id="tournaments">
             <button class="dropdown-btn" onclick="toggleDropdown('u14')">Under 14 <span class="caret">▼</span></button>
@@ -250,17 +212,15 @@
                     </div>
                 `).join('');
             }
-
             const latestList = document.getElementById('latest-matches');
             if(latestList) {
-                // FILTRO HomeRecenti
                 const homeRecentMatches = DB_PARTITE.filter(p => p.HomeRecenti === 'si');
                 latestList.innerHTML = homeRecentMatches.map(p => `
                     <div class="card" onclick="openMatch('${p.id}', 'partite')">
                         <div class="thumbnail-container">
                             <img src="${p.img}">
                             <div class="info-badge">${p.tag || 'MATCH'}</div>
-                            <div class="save-badge" onclick="event.stopPropagation(); saveMatch('${p.id}', '${p.titolo}', '${p.img}')">SALVA</div>
+                            <div class="save-badge" onclick="event.stopPropagation(); saveContent('${p.id}', 'partite')">SALVA</div>
                         </div>
                         <div class="card-title">${p.titolo}</div>
                     </div>
@@ -284,6 +244,7 @@
                     <div class="thumbnail-container">
                         <img src="${p.img}">
                         <div class="info-badge">${p.cat}</div>
+                        <div class="save-badge" onclick="event.stopPropagation(); saveContent('${p.id}', 'highlights')">SALVA</div>
                     </div>
                     <div class="card-title">${p.titolo}</div>
                 </div>`).join('');
@@ -296,7 +257,6 @@
             const catMatches = DB_PARTITE.filter(p => p.cat === nome);
             const catSlides = catMatches.filter(p => p.sliderCat === 'si');
             const slider = document.getElementById('catSlider');
-            
             if(catSlides.length > 0) {
                 slider.innerHTML = catSlides.map(p => `
                 <div class="slide" style="background-image: url('${p.img}');" onclick="openMatch('${p.id}', 'partite')">
@@ -305,16 +265,14 @@
                         <div class="slide-title">${p.titolo}</div>
                     </div>
                 </div>`).join('');
-            } else {
-                slider.innerHTML = `<div class="slide"><div class="slide-info"><div class="slide-title">Nessun match in evidenza per ${nome}</div></div></div>`;
-            }
+            } else { slider.innerHTML = `<div class="slide"><div class="slide-info"><div class="slide-title">Nessun match in evidenza per ${nome}</div></div></div>`; }
 
             document.getElementById('cat-all-list').innerHTML = catMatches.map(p => `
                 <div class="card" onclick="openMatch('${p.id}', 'partite')">
                     <div class="thumbnail-container">
                         <img src="${p.img}">
                         <div class="info-badge">${p.tag || 'MATCH'}</div>
-                        <div class="save-badge" onclick="event.stopPropagation(); saveMatch('${p.id}', '${p.titolo}', '${p.img}')">SALVA</div>
+                        <div class="save-badge" onclick="event.stopPropagation(); saveContent('${p.id}', 'partite')">SALVA</div>
                     </div>
                     <div class="card-title">${p.titolo}</div>
                 </div>
@@ -327,6 +285,7 @@
                 <div class="insta-item" onclick="openMatch('${p.id}', 'shorts')">
                     <img src="${p.img}">
                     <div class="insta-badge">${p.cat}</div>
+                    <div class="save-badge" style="font-size:8px; padding:3px 6px;" onclick="event.stopPropagation(); saveContent('${p.id}', 'shorts')">SALVA</div>
                 </div>`).join('');
         }
 
@@ -337,25 +296,34 @@
 
             const match = db.find(p => p.id === id);
             if(!match) return;
+
+            const watchBtn = document.querySelector('.watch-btn');
+            if (dbType === 'highlights') { watchBtn.innerText = "GUARDA HIGHLIGHTS"; } 
+            else if (dbType === 'shorts') { watchBtn.innerText = "GUARDA SHORTS"; } 
+            else { watchBtn.innerText = "GUARDA IL MATCH"; }
+
             document.getElementById('p-img').src = match.img;
             document.getElementById('p-title').innerText = match.titolo;
             document.getElementById('p-score').innerText = match.punteggio || "";
-            document.getElementById('p-cat').innerText = match.cat.toUpperCase();
+            document.getElementById('p-cat').innerText = (match.cat || "").toUpperCase();
             document.getElementById('p-date').innerText = match.anno;
             document.getElementById('player-page').style.display = 'block';
             document.body.style.overflow = 'hidden';
             currentMatchId = id;
+            currentMatchId_type = dbType; // Salviamo il tipo per la cronologia
         }
 
-        function closePlayer() { 
-            document.getElementById('player-page').style.display = 'none'; 
-            document.body.style.overflow = 'auto';
-        }
+        function closePlayer() { document.getElementById('player-page').style.display = 'none'; document.body.style.overflow = 'auto'; }
 
         function startVideo() { 
             const allDbs = [...DB_PARTITE, ...DB_HIGHLIGHTS, ...DB_SHORTS];
             const match = allDbs.find(p => p.id === currentMatchId);
-            if(match) addToHistory(match); 
+            if(match) {
+                let type = 'partite';
+                if(DB_HIGHLIGHTS.find(x => x.id === match.id)) type = 'highlights';
+                if(DB_SHORTS.find(x => x.id === match.id)) type = 'shorts';
+                addToHistory(match, type); 
+            }
             tg.sendData(currentMatchId); 
             tg.HapticFeedback.impactOccurred('heavy');
             setTimeout(() => { tg.close(); }, 150); 
@@ -370,46 +338,51 @@
             window.scrollTo(0,0);
         }
 
-        function addToHistory(match) {
-            let history = JSON.parse(localStorage.getItem('hidros_history') || '[]');
+        // --- SALVATAGGIO UNIVERSALE ---
+        function saveContent(id, type) {
+            let db = type === 'partite' ? DB_PARTITE : (type === 'highlights' ? DB_HIGHLIGHTS : DB_SHORTS);
+            let item = db.find(x => x.id === id);
+            if(!item) return;
+
+            let saved = JSON.parse(localStorage.getItem('hidros_saved_v2') || '[]');
+            if (!saved.find(m => m.id === id)) {
+                saved.push({id: item.id, titolo: item.titolo, img: item.img, type: type});
+                localStorage.setItem('hidros_saved_v2', JSON.stringify(saved));
+                tg.HapticFeedback.notificationOccurred('success');
+            }
+        }
+
+        function addToHistory(match, type) {
+            let history = JSON.parse(localStorage.getItem('hidros_history_v2') || '[]');
             history = history.filter(m => m.id !== match.id);
-            history.unshift(match);
-            localStorage.setItem('hidros_history', JSON.stringify(history.slice(0, 20)));
+            history.unshift({id: match.id, titolo: match.titolo, img: match.img, type: type});
+            localStorage.setItem('hidros_history_v2', JSON.stringify(history.slice(0, 20)));
         }
 
         function showHistoryPage() {
             showPage('history-page');
-            const history = JSON.parse(localStorage.getItem('hidros_history') || '[]');
+            const history = JSON.parse(localStorage.getItem('hidros_history_v2') || '[]');
             const container = document.getElementById('history-content');
             if (history.length === 0) {
                 container.innerHTML = `<div class="empty-message"><h2>Cronologia vuota</h2><button class="home-btn" onclick="showPage('home')">Inizia a guardare</button></div>`;
             } else {
                 let html = `<div class="section-title">Visti di recente</div><div class="history-grid">`;
-                history.forEach(m => { html += `<div class="card" onclick="openMatch('${m.id}')"><div class="thumbnail-container"><img src="${m.img}"></div><div class="card-title">${m.titolo}</div></div>`; });
-                html += `</div><button class="clear-btn" onclick="localStorage.removeItem('hidros_history'); showHistoryPage();">Cancella cronologia</button>`;
+                history.forEach(m => { html += `<div class="card" onclick="openMatch('${m.id}', '${m.type}')"><div class="thumbnail-container"><img src="${m.img}"></div><div class="card-title">${m.titolo}</div></div>`; });
+                html += `</div><button class="clear-btn" onclick="localStorage.removeItem('hidros_history_v2'); showHistoryPage();">Cancella cronologia</button>`;
                 container.innerHTML = html;
-            }
-        }
-
-        function saveMatch(id, title, img) {
-            let saved = JSON.parse(localStorage.getItem('hidros_saved') || '[]');
-            if (!saved.find(m => m.id === id)) {
-                saved.push({id, title, img});
-                localStorage.setItem('hidros_saved', JSON.stringify(saved));
-                tg.HapticFeedback.notificationOccurred('success');
             }
         }
 
         function showSavedPage() {
             showPage('saved-page');
-            const saved = JSON.parse(localStorage.getItem('hidros_saved') || '[]');
+            const saved = JSON.parse(localStorage.getItem('hidros_saved_v2') || '[]');
             const container = document.getElementById('saved-content');
             if (saved.length === 0) {
-                container.innerHTML = `<div class="empty-message"><h2>Nessuna partita salvata</h2><button class="home-btn" onclick="showPage('home')">Torna alla Home</button></div>`;
+                container.innerHTML = `<div class="empty-message"><h2>Nessun salvataggio</h2><button class="home-btn" onclick="showPage('home')">Torna alla Home</button></div>`;
             } else {
                 let html = `<div class="section-title">I tuoi Segnalibri</div><div class="saved-grid">`;
-                saved.forEach(m => { html += `<div class="card" onclick="openMatch('${m.id}')"><div class="thumbnail-container"><img src="${m.img}"></div><div class="card-title">${m.title}</div></div>`; });
-                html += `</div><button class="clear-btn" onclick="localStorage.removeItem('hidros_saved'); showSavedPage();">Svuota tutto</button>`;
+                saved.forEach(m => { html += `<div class="card" onclick="openMatch('${m.id}', '${m.type}')"><div class="thumbnail-container"><img src="${m.img}"></div><div class="card-title">${m.titolo}</div></div>`; });
+                html += `</div><button class="clear-btn" onclick="localStorage.removeItem('hidros_saved_v2'); showSavedPage();">Svuota tutto</button>`;
                 container.innerHTML = html;
             }
         }
@@ -417,9 +390,13 @@
         function handleSearch(val) {
             const res = document.getElementById('search-results');
             if(!val) { res.innerHTML = ''; return; }
-            const allDbs = [...DB_PARTITE, ...DB_HIGHLIGHTS, ...DB_SHORTS];
-            const filtered = allDbs.filter(p => p.titolo.toLowerCase().includes(val.toLowerCase()) || p.cat.toLowerCase().includes(val.toLowerCase()));
-            res.innerHTML = filtered.map(p => `<div class="search-result-item" onclick="openMatch('${p.id}')"><img src="${p.img}" class="search-thumb"><div class="search-info"><b>${p.titolo}</b><div>${p.cat}</div></div></div>`).join('');
+            const allDbsWithTypes = [
+                ...DB_PARTITE.map(p => ({...p, type: 'partite'})),
+                ...DB_HIGHLIGHTS.map(p => ({...p, type: 'highlights'})),
+                ...DB_SHORTS.map(p => ({...p, type: 'shorts'}))
+            ];
+            const filtered = allDbsWithTypes.filter(p => p.titolo.toLowerCase().includes(val.toLowerCase()) || (p.cat || "").toLowerCase().includes(val.toLowerCase()));
+            res.innerHTML = filtered.map(p => `<div class="search-result-item" onclick="openMatch('${p.id}', '${p.type}')"><img src="${p.img}" class="search-thumb"><div class="search-info"><b>${p.titolo}</b><div>${p.cat}</div></div></div>`).join('');
         }
 
         function animate() {
@@ -448,7 +425,6 @@
 
         initApp();
         animate();
-
         function toggleSearch() { const s = document.getElementById('search-bar-container'); s.style.display = s.style.display === 'block' ? 'none' : 'block'; if(s.style.display === 'block') document.getElementById('search-input').focus(); }
         function openNav() { document.getElementById("mySidebar").style.width = "280px"; }
         function closeNav() { document.getElementById("mySidebar").style.width = "0"; }
