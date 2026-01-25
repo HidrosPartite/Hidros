@@ -12,7 +12,7 @@
     <style>
         body { margin: 0; padding: 0; background-color: #000; color: #fff; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; overflow-x: hidden; }
 
-        /* --- SIDEBAR: FIX DEFINITIVO PER PC E MOBILE --- */
+        /* --- SIDEBAR --- */
         .sidebar { 
             height: 100vh; 
             width: 0; 
@@ -28,18 +28,10 @@
             display: flex;
             flex-direction: column;
         }
-
-        .sidebar::after {
-            content: "";
-            min-height: 150px;
-            display: block;
-            width: 100%;
-        }
-
+        .sidebar::after { content: ""; min-height: 150px; display: block; width: 100%; }
         .sidebar::-webkit-scrollbar { width: 8px; }
         .sidebar::-webkit-scrollbar-thumb { background: #a855f7; border-radius: 10px; }
         .sidebar::-webkit-scrollbar-track { background: #111; }
-
         .sidebar a, .dropdown-btn { padding: 15px 25px; text-decoration: none; font-size: 18px; color: #ccc; display: block; border: none; background: none; width: 100%; text-align: left; cursor: pointer; outline: none; font-family: inherit; flex-shrink: 0; }
         .sidebar .closebtn { position: absolute; top: 10px; right: 25px; font-size: 36px; z-index: 610; }
         .dropdown-container { display: none; background-color: #1a1a1a; }
@@ -61,7 +53,7 @@
         .search-thumb { width: 100px; aspect-ratio: 16/9; border-radius: 5px; object-fit: cover; }
         .search-info b { font-size: 14px; color: #fff; }
 
-        /* --- GRID STILE SHORTS (Instagram) --- */
+        /* --- GRID SHORTS --- */
         .insta-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; padding: 2px; }
         .insta-item { aspect-ratio: 9/16; position: relative; overflow: hidden; cursor: pointer; }
         .insta-item img { width: 100%; height: 100%; object-fit: cover; }
@@ -73,34 +65,20 @@
         .player-content { padding: 5px 20px 40px; margin-top: -15px; }
         .p-cat-tag { background: #a855f7; display: inline-block; padding: 5px 12px; border-radius: 6px; font-weight: bold; font-size: 14px; margin-bottom: 15px; }
         .player-title { font-size: 38px; font-weight: 900; line-height: 1.1; margin-bottom: 15px; }
+        
+        /* NUOVO STILE TAG UNDER */
+        .p-under-tag { font-size: 20px; color: #a855f7; font-weight: bold; margin-bottom: 10px; text-transform: uppercase; }
+        
         .player-score { font-size: 50px; font-weight: 900; color: #a855f7; margin-bottom: 5px; letter-spacing: -2px; }
         .player-date { font-size: 22px; color: #888; margin-bottom: 30px; font-weight: 600; }
         .watch-btn { width: 100%; background: #fff; color: #000; border: none; padding: 18px; border-radius: 15px; font-size: 20px; font-weight: 800; cursor: pointer; }
-        
-        .back-btn-player { 
-            position: absolute; top: 20px; left: 20px; 
-            background: rgba(255, 255, 255, 0.2); 
-            backdrop-filter: blur(10px);
-            color: white; border: 1px solid rgba(255,255,255,0.3); 
-            padding: 8px 15px; border-radius: 8px; 
-            font-size: 14px; font-weight: bold; z-index: 710; 
-            cursor: pointer;
-        }
+        .back-btn-player { position: absolute; top: 20px; left: 20px; background: rgba(255, 255, 255, 0.2); backdrop-filter: blur(10px); color: white; border: 1px solid rgba(255,255,255,0.3); padding: 8px 15px; border-radius: 8px; font-size: 14px; font-weight: bold; z-index: 710; cursor: pointer; }
 
+        /* --- PAGES --- */
         .page { display: none; min-height: 100vh; padding-bottom: 50px; }
         .active-page { display: block; }
         .section-title { padding: 20px 15px 5px; font-size: 22px; font-weight: bold; display: flex; justify-content: space-between; align-items: center; }
-
-        .horizontal-scroll { 
-            display: flex; 
-            overflow-x: auto; 
-            padding: 10px 15px 25px; 
-            gap: 20px; 
-            -webkit-overflow-scrolling: touch; 
-            scrollbar-width: thin; 
-            scrollbar-color: #a855f7 #1c1c1c; 
-        }
-
+        .horizontal-scroll { display: flex; overflow-x: auto; padding: 10px 15px 25px; gap: 20px; -webkit-overflow-scrolling: touch; scrollbar-width: thin; scrollbar-color: #a855f7 #1c1c1c; }
         .horizontal-scroll::-webkit-scrollbar { height: 6px; }
         .horizontal-scroll::-webkit-scrollbar-track { background: #1c1c1c; border-radius: 10px; margin: 0 15px; }
         .horizontal-scroll::-webkit-scrollbar-thumb { background: #a855f7; border-radius: 10px; }
@@ -134,7 +112,6 @@
         <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
         <div style="padding: 0 25px 20px; font-weight: bold; color: #a855f7; font-size: 24px; flex-shrink: 0;">HIDROS</div>
         <a href="#" onclick="showPage('home')"><img src="PNG/HomeMenu.png" style="width: 20px; vertical-align: middle; margin-right: 10px;"> Home</a>
-        
         <a href="#" onclick="openHighlights()"><img src="PNG/Trofeo.png" style="width: 20px; vertical-align: middle; margin-right: 10px;"> Highlights</a>
         <a href="#" onclick="openShorts()"><img src="PNG/Trofeo.png" style="width: 20px; vertical-align: middle; margin-right: 10px;"> Shorts</a>
 
@@ -210,13 +187,8 @@
         <div class="horizontal-scroll" id="cat-all-list"></div>
     </div>
 
-    <div id="history-page" class="page">
-        <div id="history-content"></div>
-    </div>
-
-    <div id="saved-page" class="page">
-        <div id="saved-content"></div>
-    </div>
+    <div id="history-page" class="page"><div id="history-content"></div></div>
+    <div id="saved-page" class="page"><div id="saved-content"></div></div>
 
     <div id="player-page">
         <button class="back-btn-player" onclick="closePlayer()">TORNA INDIETRO</button>
@@ -224,9 +196,12 @@
         <div class="player-content">
             <div id="p-cat" class="p-cat-tag">CATEGORIA</div>
             <div id="p-title" class="player-title">Titolo</div>
+            
+            <div id="p-under" class="p-under-tag"></div>
+            
             <div id="p-score" class="player-score">0 - 0</div>
             <div id="p-date" class="player-date">Data</div>
-            <button class="watch-btn" onclick="startVideo()">GUARDA IL MATCH</button>
+            <button id="p-btn" class="watch-btn" onclick="startVideo()">GUARDA IL MATCH</button>
         </div>
     </div>
 
@@ -247,13 +222,10 @@
                             <div class="p-cat-tag">${p.tag || 'MATCH'}</div>
                             <div class="slide-title">${p.titolo}</div>
                         </div>
-                    </div>
-                `).join('');
+                    </div>`).join('');
             }
-
             const latestList = document.getElementById('latest-matches');
             if(latestList) {
-                // FILTRO HomeRecenti
                 const homeRecentMatches = DB_PARTITE.filter(p => p.HomeRecenti === 'si');
                 latestList.innerHTML = homeRecentMatches.map(p => `
                     <div class="card" onclick="openMatch('${p.id}', 'partite')">
@@ -263,8 +235,7 @@
                             <div class="save-badge" onclick="event.stopPropagation(); saveMatch('${p.id}', '${p.titolo}', '${p.img}')">SALVA</div>
                         </div>
                         <div class="card-title">${p.titolo}</div>
-                    </div>
-                `).join('');
+                    </div>`).join('');
             }
         }
 
@@ -278,7 +249,6 @@
                         <div class="slide-title">${p.titolo}</div>
                     </div>
                 </div>`).join('');
-
             document.getElementById('high-list').innerHTML = DB_HIGHLIGHTS.map(p => `
                 <div class="card" onclick="openMatch('${p.id}', 'highlights')">
                     <div class="thumbnail-container">
@@ -296,7 +266,6 @@
             const catMatches = DB_PARTITE.filter(p => p.cat === nome);
             const catSlides = catMatches.filter(p => p.sliderCat === 'si');
             const slider = document.getElementById('catSlider');
-            
             if(catSlides.length > 0) {
                 slider.innerHTML = catSlides.map(p => `
                 <div class="slide" style="background-image: url('${p.img}');" onclick="openMatch('${p.id}', 'partite')">
@@ -308,7 +277,6 @@
             } else {
                 slider.innerHTML = `<div class="slide"><div class="slide-info"><div class="slide-title">Nessun match in evidenza per ${nome}</div></div></div>`;
             }
-
             document.getElementById('cat-all-list').innerHTML = catMatches.map(p => `
                 <div class="card" onclick="openMatch('${p.id}', 'partite')">
                     <div class="thumbnail-container">
@@ -317,8 +285,7 @@
                         <div class="save-badge" onclick="event.stopPropagation(); saveMatch('${p.id}', '${p.titolo}', '${p.img}')">SALVA</div>
                     </div>
                     <div class="card-title">${p.titolo}</div>
-                </div>
-            `).join('');
+                </div>`).join('');
         }
 
         function openShorts() {
@@ -330,18 +297,40 @@
                 </div>`).join('');
         }
 
+        // FUNZIONE OPENMATCH AGGIORNATA CON LE TUE RICHIESTE
         function openMatch(id, dbType = 'partite') {
             let db = DB_PARTITE;
-            if(dbType === 'highlights') db = DB_HIGHLIGHTS;
-            if(dbType === 'shorts') db = DB_SHORTS;
+            let label = "GUARDA IL MATCH";
+
+            if(dbType === 'highlights') {
+                db = DB_HIGHLIGHTS;
+                label = "GUARDA HIGHLIGHTS";
+            } else if(dbType === 'shorts') {
+                db = DB_SHORTS;
+                label = "GUARDA SHORTS";
+            }
 
             const match = db.find(p => p.id === id);
             if(!match) return;
+
             document.getElementById('p-img').src = match.img;
             document.getElementById('p-title').innerText = match.titolo;
             document.getElementById('p-score').innerText = match.punteggio || "";
-            document.getElementById('p-cat').innerText = match.cat.toUpperCase();
             document.getElementById('p-date').innerText = match.anno;
+            document.getElementById('p-cat').innerText = (match.cat || match.tag || "VIDEO").toUpperCase();
+            
+            // 1. Cambia il testo del pulsante
+            document.getElementById('p-btn').innerText = label;
+
+            // 2. Mostra l'Under se presente nel file .js
+            const underElem = document.getElementById('p-under');
+            if(match.under) {
+                underElem.innerText = match.under.toUpperCase();
+                underElem.style.display = "block";
+            } else {
+                underElem.style.display = "none";
+            }
+
             document.getElementById('player-page').style.display = 'block';
             document.body.style.overflow = 'hidden';
             currentMatchId = id;
@@ -418,8 +407,8 @@
             const res = document.getElementById('search-results');
             if(!val) { res.innerHTML = ''; return; }
             const allDbs = [...DB_PARTITE, ...DB_HIGHLIGHTS, ...DB_SHORTS];
-            const filtered = allDbs.filter(p => p.titolo.toLowerCase().includes(val.toLowerCase()) || p.cat.toLowerCase().includes(val.toLowerCase()));
-            res.innerHTML = filtered.map(p => `<div class="search-result-item" onclick="openMatch('${p.id}')"><img src="${p.img}" class="search-thumb"><div class="search-info"><b>${p.titolo}</b><div>${p.cat}</div></div></div>`).join('');
+            const filtered = allDbs.filter(p => p.titolo.toLowerCase().includes(val.toLowerCase()) || (p.cat && p.cat.toLowerCase().includes(val.toLowerCase())));
+            res.innerHTML = filtered.map(p => `<div class="search-result-item" onclick="openMatch('${p.id}')"><img src="${p.img}" class="search-thumb"><div class="search-info"><b>${p.titolo}</b><div>${p.cat || ''}</div></div></div>`).join('');
         }
 
         function animate() {
