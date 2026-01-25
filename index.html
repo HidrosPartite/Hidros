@@ -72,16 +72,11 @@
         .player-cover { width: 100%; aspect-ratio: 16/9; object-fit: cover; }
         .player-content { padding: 5px 20px 40px; margin-top: -15px; }
         .p-cat-tag { background: #a855f7; display: inline-block; padding: 5px 12px; border-radius: 6px; font-weight: bold; font-size: 14px; margin-bottom: 15px; }
-        /* Stile per il tag Genere */
-        .p-genre-tag { background: #444; display: inline-block; padding: 5px 12px; border-radius: 6px; font-weight: bold; font-size: 14px; margin-bottom: 15px; margin-left: 5px; }
         .player-title { font-size: 38px; font-weight: 900; line-height: 1.1; margin-bottom: 15px; }
         .player-score { font-size: 50px; font-weight: 900; color: #a855f7; margin-bottom: 5px; letter-spacing: -2px; }
         .player-date { font-size: 22px; color: #888; margin-bottom: 30px; font-weight: 600; }
         .watch-btn { width: 100%; background: #fff; color: #000; border: none; padding: 18px; border-radius: 15px; font-size: 20px; font-weight: 800; cursor: pointer; }
         
-        /* Stile pulsante link esterno */
-        .link-btn { width: 100%; background: #333; color: #fff; border: 1px solid #555; padding: 18px; border-radius: 15px; font-size: 18px; font-weight: 700; cursor: pointer; margin-top: 15px; display: none; }
-
         .back-btn-player { 
             position: absolute; top: 20px; left: 20px; 
             background: rgba(255, 255, 255, 0.2); 
@@ -228,12 +223,10 @@
         <img id="p-img" class="player-cover" src="">
         <div class="player-content">
             <div id="p-cat" class="p-cat-tag">CATEGORIA</div>
-            <div id="p-genre" class="p-genre-tag" style="display:none;">GENERE</div>
             <div id="p-title" class="player-title">Titolo</div>
             <div id="p-score" class="player-score">0 - 0</div>
             <div id="p-date" class="player-date">Data</div>
             <button class="watch-btn" onclick="startVideo()">GUARDA IL MATCH</button>
-            <button id="p-link-btn" class="link-btn" onclick="openExternalLink()">STATISTICHE MATCH</button>
         </div>
     </div>
 
@@ -349,26 +342,6 @@
             document.getElementById('p-score').innerText = match.punteggio || "";
             document.getElementById('p-cat').innerText = match.cat.toUpperCase();
             document.getElementById('p-date').innerText = match.anno;
-
-            // Gestione Tag Genere
-            const genreTag = document.getElementById('p-genre');
-            if(match.genere) {
-                genreTag.innerText = match.genere.toUpperCase();
-                genreTag.style.display = 'inline-block';
-            } else {
-                genreTag.style.display = 'none';
-            }
-
-            // Gestione Pulsante Link Esterno
-            const linkBtn = document.getElementById('p-link-btn');
-            if(match.link && match.link.trim() !== "") {
-                linkBtn.innerText = match.testoLink || "SCOPRI DI PIÙ";
-                linkBtn.style.display = 'block';
-                linkBtn.onclick = () => { tg.openLink(match.link); };
-            } else {
-                linkBtn.style.display = 'none';
-            }
-
             document.getElementById('player-page').style.display = 'block';
             document.body.style.overflow = 'hidden';
             currentMatchId = id;
