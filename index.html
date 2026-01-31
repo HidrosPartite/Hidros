@@ -60,27 +60,14 @@
         .watch-btn { width: 100%; background: #fff; color: #000; border: none; padding: 18px; border-radius: 15px; font-size: 20px; font-weight: 800; cursor: pointer; }
         .back-btn-player { position: absolute; top: 20px; left: 20px; background: rgba(255, 255, 255, 0.2); backdrop-filter: blur(10px); color: white; border: 1px solid rgba(255,255,255,0.3); padding: 8px 15px; border-radius: 8px; font-size: 14px; font-weight: bold; z-index: 710; cursor: pointer; }
 
-        /* --- SEZIONE EPISODI ORIZZONTALI (MODIFICATA) --- */
+        /* --- SEZIONE EPISODI --- */
         .episodi-section { margin-top: 30px; border-top: 1px solid #222; padding-top: 20px; }
         .episodi-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
         .episodi-header h3 { margin: 0; font-size: 20px; }
-        .episodi-list { 
-            display: flex; 
-            overflow-x: auto; 
-            gap: 15px; 
-            padding-bottom: 15px; 
-            -webkit-overflow-scrolling: touch; 
-        }
+        .episodi-list { display: flex; overflow-x: auto; gap: 15px; padding-bottom: 15px; -webkit-overflow-scrolling: touch; }
         .episodi-list::-webkit-scrollbar { height: 4px; }
         .episodi-list::-webkit-scrollbar-thumb { background: #a855f7; border-radius: 10px; }
-        .episodio-item { 
-            min-width: 170px; /* Assicura che gli elementi non si restringano per forzare lo scroll */
-            background: #111; 
-            padding: 10px; 
-            border-radius: 12px; 
-            cursor: pointer; 
-            flex-shrink: 0; 
-        }
+        .episodio-item { min-width: 170px; background: #111; padding: 10px; border-radius: 12px; cursor: pointer; flex-shrink: 0; }
         .ep-thumb-container { width: 100%; aspect-ratio: 16/9; border-radius: 8px; overflow: hidden; position: relative; margin-bottom: 10px; }
         .ep-thumb-container img { width: 100%; height: 100%; object-fit: cover; }
         .ep-play-icon { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 22px; opacity: 0.8; }
@@ -112,6 +99,7 @@
         .slider { display: flex; width: 100%; height: 100%; transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
         .slide { min-width: 100%; height: 100%; position: relative; background-size: cover; background-position: center; cursor: pointer; }
         .slide-info { position: absolute; bottom: 0; left: 0; right: 0; padding: 60px 20px 30px; background: linear-gradient(to top, #000, transparent); }
+        .slide-title { font-size: 24px; font-weight: bold; }
         .progress-container { position: absolute; bottom: 0; width: 100%; height: 4px; background: rgba(255,255,255,0.1); }
         .progress-bar { height: 100%; width: 0; background: #a855f7; }
 
@@ -237,6 +225,7 @@
         let sliders = { home: { idx: 0, start: Date.now() }, cat: { idx: 0, start: Date.now() }, high: { idx: 0, start: Date.now() } };
 
         function initApp() {
+            // Slider Home
             const sliderHome = document.getElementById('homeSlider');
             if(sliderHome) {
                 const homeSlides = DB_PARTITE.filter(p => p.sliderHome === 'si');
@@ -248,7 +237,11 @@
                         </div>
                     </div>
                 `).join('');
+                sliders.home.idx = 0;
+                sliders.home.start = Date.now();
             }
+            
+            // Ultime Sfide Home
             const latestList = document.getElementById('latest-matches');
             if(latestList) {
                 const homeRecentMatches = DB_PARTITE.filter(p => p.HomeRecenti === 'si');
@@ -285,7 +278,10 @@
                     </div>
                     <div class="card-title">${p.titolo}</div>
                 </div>`).join('');
+            
+            sliders.high.idx = 0;
             sliders.high.start = Date.now();
+            document.getElementById('highSlider').style.transform = `translateX(0)`;
         }
 
         function openCategory(nome) {
@@ -294,6 +290,7 @@
             const catMatches = DB_PARTITE.filter(p => p.cat === nome);
             const catSlides = catMatches.filter(p => p.sliderCat === 'si');
             const slider = document.getElementById('catSlider');
+            
             if(catSlides.length > 0) {
                 slider.innerHTML = catSlides.map(p => `
                 <div class="slide" style="background-image: url('${p.img}');" onclick="openMatch('${p.id}', 'partite')">
@@ -302,7 +299,9 @@
                         <div class="slide-title">${p.titolo}</div>
                     </div>
                 </div>`).join('');
-            } else { slider.innerHTML = `<div class="slide"><div class="slide-info"><div class="slide-title">Nessun match in evidenza per ${nome}</div></div></div>`; }
+            } else { 
+                slider.innerHTML = `<div class="slide"><div class="slide-info"><div class="slide-title">Nessun match in evidenza per ${nome}</div></div></div>`; 
+            }
 
             document.getElementById('cat-all-list').innerHTML = catMatches.map(p => `
                 <div class="card" onclick="openMatch('${p.id}', 'partite')">
@@ -314,6 +313,10 @@
                     <div class="card-title">${p.titolo}</div>
                 </div>
             `).join('');
+            
+            sliders.cat.idx = 0;
+            sliders.cat.start = Date.now();
+            slider.style.transform = `translateX(0)`;
         }
 
         function openShorts() {
@@ -349,12 +352,11 @@
             document.getElementById('p-cat').innerText = (match.cat || "").toUpperCase();
             document.getElementById('p-date').innerText = match.anno;
 
-            // Logica Episodi Orizzontali
             if(dbType === 'partite' && match.episodi && match.episodi.length > 0) {
                 mainBtn.style.display = 'none';
                 episodiBox.style.display = 'block';
                 document.getElementById('episodi-list').innerHTML = match.episodi.map((ep, idx) => `
-                    <div class="episodio-item" onclick="startEpisode('${ep.id}')">
+                    <div class="episodio-item" onclick="startEpisode('${ep.id}', '${match.id}')">
                         <div class="ep-thumb-container">
                             <img src="${match.img}">
                             <img src="PNG/HomeMenu.png" class="ep-play-icon">
@@ -373,9 +375,14 @@
             currentMatchId = id;
         }
 
-        function closePlayer() { document.getElementById('player-page').style.display = 'none'; document.body.style.overflow = 'auto'; }
+        function closePlayer() { 
+            document.getElementById('player-page').style.display = 'none'; 
+            document.body.style.overflow = 'auto'; 
+        }
 
-        function startEpisode(epId) {
+        function startEpisode(epId, matchId) {
+            const match = DB_PARTITE.find(p => p.id === matchId);
+            if(match) addToHistory(match, 'partite');
             tg.sendData(epId); 
             tg.HapticFeedback.impactOccurred('heavy');
             setTimeout(() => { tg.close(); }, 150);
@@ -466,14 +473,20 @@
         function animate() {
             const keys = ['home', 'cat', 'high'];
             keys.forEach(k => {
-                const pageId = (k === 'high') ? 'highlights-page' : k;
+                let pageId = k;
+                if(k === 'high') pageId = 'highlights-page';
+                if(k === 'cat') pageId = 'category-page';
+                
                 const p = document.getElementById(pageId);
                 if(p && p.classList.contains('active-page')) {
                     const bar = document.getElementById(k + 'ProgressBar');
                     const slider = document.getElementById(k + 'Slider');
                     if(!bar || !slider) return;
+                    
                     let elapsed = Date.now() - sliders[k].start;
-                    bar.style.width = Math.min((elapsed/5000)*100, 100) + "%";
+                    let percent = Math.min((elapsed/5000)*100, 100);
+                    bar.style.width = percent + "%";
+                    
                     if(elapsed >= 5000) {
                         const slides = slider.querySelectorAll('.slide');
                         if(slides.length > 1) { 
@@ -487,12 +500,20 @@
             requestAnimationFrame(animate);
         }
 
-        initApp();
-        animate();
-        function toggleSearch() { const s = document.getElementById('search-bar-container'); s.style.display = s.style.display === 'block' ? 'none' : 'block'; if(s.style.display === 'block') document.getElementById('search-input').focus(); }
+        function toggleSearch() { 
+            const s = document.getElementById('search-bar-container'); 
+            s.style.display = s.style.display === 'block' ? 'none' : 'block'; 
+            if(s.style.display === 'block') document.getElementById('search-input').focus(); 
+        }
         function openNav() { document.getElementById("mySidebar").style.width = "280px"; }
         function closeNav() { document.getElementById("mySidebar").style.width = "0"; }
-        function toggleDropdown(id) { const d = document.getElementById(id); d.style.display = d.style.display === "block" ? "none" : "block"; }
+        function toggleDropdown(id) { 
+            const d = document.getElementById(id); 
+            d.style.display = d.style.display === "block" ? "none" : "block"; 
+        }
+
+        initApp();
+        animate();
     </script>
 </body>
 </html>
