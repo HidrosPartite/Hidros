@@ -1,6 +1,6 @@
 const DB_PARTITE = [
     { 
-        id: '1', 
+        id: 'NON_INVIARE_QUESTO_SE_HAI_EPISODI', 
         titolo: 'Hidros vs Volley Casoria', 
         cat: 'Serie C', 
         tag: 'Rimonta', 
@@ -13,7 +13,7 @@ const DB_PARTITE = [
         episodi: [
             {id: 'BAACAgQAAyEFAATHEOJSAAMCaX5xmK_g1rkhWydf3d8__DuedTQAAn8dAALUEfBTh6aPL5JsZaw4BA', titolo: 'Primo Set'}, 
             {id: 'BAACAgQAAxkBAAMXaX5_ll5LxHOgVA4HVJjgNU31-E4AAgQfAAI9pPlTz27ry6QOIaM4BA', titolo: 'Secondo Set'}, 
-            {id: 'INSERISCI_QUI_ID_SET_3', titolo: 'Terzo Set'} // <-- Ricordati di cambiare questo!
+            {id: 'INSERISCI_QUI_IL_TERZO_ID', titolo: 'Terzo Set'}
         ] 
     },
 ];
