@@ -225,7 +225,6 @@
         let sliders = { home: { idx: 0, start: Date.now() }, cat: { idx: 0, start: Date.now() }, high: { idx: 0, start: Date.now() } };
 
         function initApp() {
-            // Slider Home
             const sliderHome = document.getElementById('homeSlider');
             if(sliderHome) {
                 const homeSlides = DB_PARTITE.filter(p => p.sliderHome === 'si');
@@ -241,7 +240,6 @@
                 sliders.home.start = Date.now();
             }
             
-            // Ultime Sfide Home
             const latestList = document.getElementById('latest-matches');
             if(latestList) {
                 const homeRecentMatches = DB_PARTITE.filter(p => p.HomeRecenti === 'si');
@@ -380,12 +378,13 @@
             document.body.style.overflow = 'auto'; 
         }
 
+        /* --- CORREZIONE INVIO VIDEO --- */
         function startEpisode(epId, matchId) {
             const match = DB_PARTITE.find(p => p.id === matchId);
             if(match) addToHistory(match, 'partite');
             tg.sendData(epId); 
             tg.HapticFeedback.impactOccurred('heavy');
-            setTimeout(() => { tg.close(); }, 150);
+            setTimeout(() => { tg.close(); }, 300);
         }
 
         function startVideo() { 
@@ -399,7 +398,7 @@
             }
             tg.sendData(currentMatchId); 
             tg.HapticFeedback.impactOccurred('heavy');
-            setTimeout(() => { tg.close(); }, 150); 
+            setTimeout(() => { tg.close(); }, 300); 
         }
 
         function showPage(pageId) {
