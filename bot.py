@@ -2,40 +2,38 @@ import telebot
 import os
 from telebot import types
 
-# Recupera il Token (Assicurati di aver fatto 'export BOT_TOKEN=...' nella console)
+# Recupera il Token
 API_TOKEN = os.getenv('BOT_TOKEN')
 bot = telebot.TeleBot(API_TOKEN)
 
 WEB_APP_URL = 'https://hidrospartite.github.io/Hidros/'
 
-# Dizionario per la pulizia della chat (chat_id: message_id)
+# Dizionario per la pulizia della chat
 last_messages = {}
 
 print(f"Bot connesso con successo: {bot.get_me().first_name}")
 
-# --- 1. TEST DI RISPOSTA (Scrivi 'ciao' per vedere se è vivo) ---
+# --- 1. TEST DI RISPOSTA ---
 @bot.message_handler(func=lambda message: message.text and message.text.lower() == 'ciao')
 def test_messaggio(message):
     bot.reply_to(message, "👋 Ti sento forte e chiaro! Inviami un video ora per ricevere l'ID.")
 
-# --- 2. RECUPERO FILE_ID (Gestisce sia Video che Documenti/File) ---
+# --- 2. RECUPERO FILE_ID (Corretto per evitare errori 400) ---
 @bot.message_handler(content_types=['video', 'document'])
 def handle_video(message):
     file_id = None
     
-    # Se Telegram lo invia come Video
     if message.video:
         file_id = message.video.file_id
-    # Se lo invia come File (documento) controlliamo che sia un video
-    elif message.document:
-        mime = message.document.mime_type
-        if mime and mime.startswith('video'):
-            file_id = message.document.file_id
+    elif message.document and message.document.mime_type and message.document.mime_type.startswith('video'):
+        file_id = message.document.file_id
 
     if file_id:
-        bot.reply_to(message, f"✅ FILE_ID RICEVUTO:\n\n`{file_id}`", parse_mode='Markdown')
+        # Usiamo HTML <code> per evitare errori con i caratteri speciali dell'ID
+        risposta = f"✅ <b>FILE_ID RICEVUTO:</b>\n\n<code>{file_id}</code>"
+        bot.reply_to(message, risposta, parse_mode='HTML')
     else:
-        bot.reply_to(message, "❌ Questo file non sembra un video. Riprova con un altro file.")
+        bot.reply_to(message, "❌ Invia un file video per ottenere l'ID.")
 
 # --- 3. GESTIONE INVIO VIDEO DALLA WEB APP ---
 @bot.message_handler(content_types=['web_app_data'])
@@ -62,7 +60,7 @@ def handle_web_app_data(message):
         )
         last_messages[chat_id] = sent_message.message_id
     except Exception:
-        bot.send_message(chat_id, "Errore: L'ID del video salvato nel database non è valido.")
+        bot.send_message(chat_id, "⚠️ Errore: L'ID video nel database non è valido o il bot non ha accesso al file.")
 
 # --- 4. MESSAGGIO DI START ---
 @bot.message_handler(commands=['start'])
