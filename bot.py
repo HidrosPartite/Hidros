@@ -45,7 +45,7 @@ def handle_web_app_data(message):
         )
         # Salva l'ID per cancellarlo alla prossima richiesta
         last_messages[chat_id] = sent_message.message_id
-    except Exception as e:
+    except Exception:
         bot.send_message(chat_id, "Errore: ID video non valido nel file JS.")
 
 # 3. MESSAGGIO DI START PULITO
