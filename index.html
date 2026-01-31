@@ -60,14 +60,27 @@
         .watch-btn { width: 100%; background: #fff; color: #000; border: none; padding: 18px; border-radius: 15px; font-size: 20px; font-weight: 800; cursor: pointer; }
         .back-btn-player { position: absolute; top: 20px; left: 20px; background: rgba(255, 255, 255, 0.2); backdrop-filter: blur(10px); color: white; border: 1px solid rgba(255,255,255,0.3); padding: 8px 15px; border-radius: 8px; font-size: 14px; font-weight: bold; z-index: 710; cursor: pointer; }
 
-        /* --- SEZIONE EPISODI ORIZZONTALI --- */
+        /* --- SEZIONE EPISODI ORIZZONTALI (MODIFICATA) --- */
         .episodi-section { margin-top: 30px; border-top: 1px solid #222; padding-top: 20px; }
         .episodi-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
         .episodi-header h3 { margin: 0; font-size: 20px; }
-        .episodi-list { display: flex; overflow-x: auto; gap: 15px; padding-bottom: 15px; -webkit-overflow-scrolling: touch; }
+        .episodi-list { 
+            display: flex; 
+            overflow-x: auto; 
+            gap: 15px; 
+            padding-bottom: 15px; 
+            -webkit-overflow-scrolling: touch; 
+        }
         .episodi-list::-webkit-scrollbar { height: 4px; }
         .episodi-list::-webkit-scrollbar-thumb { background: #a855f7; border-radius: 10px; }
-        .episodio-item { min-width: 170px; background: #111; padding: 10px; border-radius: 12px; cursor: pointer; flex-shrink: 0; }
+        .episodio-item { 
+            min-width: 170px; /* Assicura che gli elementi non si restringano per forzare lo scroll */
+            background: #111; 
+            padding: 10px; 
+            border-radius: 12px; 
+            cursor: pointer; 
+            flex-shrink: 0; 
+        }
         .ep-thumb-container { width: 100%; aspect-ratio: 16/9; border-radius: 8px; overflow: hidden; position: relative; margin-bottom: 10px; }
         .ep-thumb-container img { width: 100%; height: 100%; object-fit: cover; }
         .ep-play-icon { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 22px; opacity: 0.8; }
