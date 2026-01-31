@@ -1,12 +1,12 @@
 import telebot
+import os
 from telebot import types
 
-# Incolla il tuo token tra le virgolette
-API_TOKEN = 'IL_TUO_TOKEN_QUI'
+API_TOKEN = os.getenv('BOT_TOKEN')
 bot = telebot.TeleBot(API_TOKEN)
 
-# URL della tua Web App (GitHub Pages o altro)
-WEB_APP_URL = 'https://tuosito.com'
+
+WEB_APP_URL = 'https://hidrospartite.github.io/Hidros/'
 
 # Dizionario per la pulizia della chat (chat_id: message_id)
 last_messages = {}
