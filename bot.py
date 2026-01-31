@@ -4,6 +4,7 @@ from telebot import types
 
 API_TOKEN = os.getenv('BOT_TOKEN')
 bot = telebot.TeleBot(API_TOKEN)
+print(f"Bot connesso con successo: {bot.get_me().first_name}")
 
 
 WEB_APP_URL = 'https://hidrospartite.github.io/Hidros/'
