@@ -9,23 +9,27 @@ bot = telebot.TeleBot(API_TOKEN)
 # URL della tua Web App
 WEB_APP_URL = 'https://hidrospartite.github.io/Hidros/'
 
-# Dizionario per ricordarsi l'ultimo messaggio inviato e poterlo cancellare
+# Dizionario per la pulizia automatica
 last_messages = {}
 
-print("--- 🚀 BOT HIDROS ATTIVO (Con pulizia messaggi) ---")
+print("--- 🚀 BOT HIDROS ATTIVO (Senza barra verde) ---")
+
+# Configura il tasto "Menu" (quello fisso a sinistra vicino alla graffetta)
+# Questo tasto NON genera la barra verde
+bot.set_chat_menu_button(None, types.MenuButtonWebApp("Archivio 🏐", types.WebAppInfo(url=WEB_APP_URL)))
 
 @bot.message_handler(commands=['start'])
 def handle_start(message):
-    markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-    web_app_btn = types.KeyboardButton(
+    # Usiamo un tasto Inline invece di quello grigio per evitare la barra verde
+    markup = types.InlineKeyboardMarkup()
+    markup.add(types.InlineKeyboardButton(
         text="🏐 APRI ARCHIVIO HIDROS", 
         web_app=types.WebAppInfo(url=WEB_APP_URL)
-    )
-    markup.add(web_app_btn)
+    ))
     
     bot.send_message(
         message.chat.id, 
-        "<b>Benvenuto!</b>\nUsa il tasto grigio in basso per sfogliare l'archivio.", 
+        "<b>Benvenuto!</b>\nUsa il tasto qui sotto o il pulsante 'Archivio' nel menu per sfogliare i video.", 
         parse_mode='HTML',
         reply_markup=markup
     )
@@ -37,26 +41,25 @@ def handle_web_app_data(message):
     
     print(f"📥 Ricevuto ID: {file_id}")
 
-    # --- SECONDA COSA (RIPRISTINATA): Pulizia automatica ---
+    # Pulizia automatica messaggio precedente
     if chat_id in last_messages:
         try: 
             bot.delete_message(chat_id, last_messages[chat_id])
         except Exception as e:
-            print(f"Non ho potuto cancellare il messaggio: {e}")
+            print(f"Errore pulizia: {e}")
 
     try:
-        # Invia il video SENZA il tasto inline (PRIMA COSA TOLTA come richiesto)
+        # Invia il video pulito
         sent = bot.send_video(
             chat_id, 
             file_id, 
             caption="Ecco il set richiesto! 🏐"
         )
-        # Salva l'ID di questo messaggio per cancellarlo alla prossima richiesta
         last_messages[chat_id] = sent.message_id
         
     except Exception as e:
         print(f"❌ Errore nell'invio: {e}")
-        bot.send_message(chat_id, "⚠️ Errore: non riesco a inviare il video.")
+        bot.send_message(chat_id, "⚠️ Errore nell'invio del video.")
 
 if __name__ == "__main__":
     bot.infinity_polling()
