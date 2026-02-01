@@ -382,9 +382,11 @@
         function startEpisode(epId, matchId) {
             const match = DB_PARTITE.find(p => p.id === matchId);
             if(match) addToHistory(match, 'partite');
+            // Invio i dati a Telegram
             tg.sendData(epId); 
             tg.HapticFeedback.impactOccurred('heavy');
-            setTimeout(() => { tg.close(); }, 300);
+            // Chiudo l'app dopo un piccolo ritardo per garantire l'invio
+            setTimeout(() => { tg.close(); }, 400);
         }
 
         function startVideo() { 
@@ -396,9 +398,11 @@
                 if(DB_SHORTS.find(x => x.id === match.id)) type = 'shorts';
                 addToHistory(match, type); 
             }
+            // Invio l'ID della partita a Telegram
             tg.sendData(currentMatchId); 
             tg.HapticFeedback.impactOccurred('heavy');
-            setTimeout(() => { tg.close(); }, 300); 
+            // Chiudo l'app dopo un piccolo ritardo
+            setTimeout(() => { tg.close(); }, 400); 
         }
 
         function showPage(pageId) {
