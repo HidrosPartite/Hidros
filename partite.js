@@ -11,9 +11,9 @@ const DB_PARTITE = [
         sliderCat: 'si', 
         HomeRecenti: 'si', 
         episodi: [
-            {id: 'BAACAgQAAyEFAATHEOJSAAMCaX5xmK_g1rkhWydf3d8__DuedTQAAn8dAALUEfBTh6aPL5JsZaw4BA', titolo: 'Primo Set', img: 'URL_IMMAGINE_SET1.png'}, 
-            {id: 'BAACAgQAAxkBAAMXaX5_ll5LxHOgVA4HVJjgNU31-E4AAgQfAAI9pPlTz27ry6QOIaM4BA', titolo: 'Secondo Set', img: 'URL_IMMAGINE_SET2.png'}, 
-            {id: 'INSERISCI_QUI_IL_TERZO_ID', titolo: 'Terzo Set', img: 'URL_IMMAGINE_SET3.png'}
+            {id: 'BAACAgQAAyEFAATHEOJSAAMCaX5xmK_g1rkhWydf3d8__DuedTQAAn8dAALUEfBTh6aPL5JsZaw4BA', titolo: 'Primo Set', img: ''}, 
+            {id: '', titolo: 'Secondo Set', img: ''}, 
+            {id: 'INSERISCI_QUI_IL_TERZO_ID', titolo: 'Terzo Set', img: ''}
         ] 
     },
 ];
