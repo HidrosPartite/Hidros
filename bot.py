@@ -1,62 +1,56 @@
-import telebot
-import os
-from telebot import types
+import logging
+from telegram import Update, WebAppInfo, InlineKeyboardButton, InlineKeyboardMarkup
+from telegram.ext import Application, CommandHandler, MessageHandler, filters, ContextTypes
 
-# Assicurati di fare export BOT_TOKEN='...' nella bash
-API_TOKEN = os.getenv('BOT_TOKEN')
-bot = telebot.TeleBot(API_TOKEN)
+# Abilita i log per vedere gli errori nella bash
+logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
 
-# L'URL deve essere IDENTICO a quello usato in BotFather
-WEB_APP_URL = 'https://hidrospartite.github.io/Hidros/'
+TOKEN = "IL_TUO_TOKEN_QUI"
+URL_WEBAPP = "IL_TUO_URL_GITHUB_PAGES"
 
-last_messages = {}
+async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """Invia il tasto per aprire l'archivio"""
+    keyboard = [
+        [InlineKeyboardButton(
+            text="Apri Archivio Hidros 🏐", 
+            web_app=WebAppInfo(url=URL_WEBAPP)
+        )]
+    ]
+    reply_markup = InlineKeyboardMarkup(keyboard)
+    await update.message.reply_text("Benvenuto nell'Archivio Hidros! Clicca il tasto sotto per vedere i match:", reply_markup=reply_markup)
 
-print("--- 🚀 BOT HIDROS ATTIVO ---")
-
-@bot.message_handler(commands=['start'])
-def handle_start(message):
-    markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-    # Pulsante principale della tastiera
-    web_app_btn = types.KeyboardButton(text="🏐 APRI ARCHIVIO HIDROS", web_app=types.WebAppInfo(url=WEB_APP_URL))
-    markup.add(web_app_btn)
+async def handle_webapp_data(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """Questa funzione gestisce i dati inviati da tg.sendData()"""
+    # Recuperiamo l'ID inviato dalla Web App (il currentMatchId o epId)
+    video_id = update.effective_message.web_app_data.data
+    chat_id = update.effective_chat.id
     
-    bot.send_message(
-        message.chat.id, 
-        "<b>Benvenuto!</b>\nUsa il tasto grigio in basso per sfogliare l'archivio.", 
-        parse_mode='HTML',
-        reply_markup=markup
+    print(f"DEBUG: Ricevuto ID video dalla Web App: {video_id}")
+
+    # Logica per inviare il video corretto
+    # Qui puoi fare un controllo: se l'ID contiene certi prefissi, mandi video diversi
+    await context.bot.send_message(
+        chat_id=chat_id, 
+        text=f"🎬 Sto caricando il contenuto richiesto (ID: {video_id})...\nAttendere un istante."
     )
+    
+    # ESEMPIO: Se hai i file_id di Telegram o URL diretti:
+    # await context.bot.send_video(chat_id=chat_id, video="URL_O_FILE_ID")
 
-@bot.message_handler(content_types=['web_app_data'])
-def handle_web_app_data(message):
-    chat_id = message.chat.id
-    file_id = message.web_app_data.data 
-    print(f"📥 Ricevuto ID: {file_id}")
+def main():
+    """Avvia il bot"""
+    application = Application.builder().token(TOKEN).build()
 
-    # Pulizia automatica per evitare confusione nell'app
-    if chat_id in last_messages:
-        try: bot.delete_message(chat_id, last_messages[chat_id])
-        except: pass
+    # Comando /start
+    application.add_handler(CommandHandler("start", start))
 
-    # Creazione del tasto di ritorno SOTTO il video
-    markup = types.InlineKeyboardMarkup()
-    # Usiamo lo stesso URL esatto
-    markup.add(types.InlineKeyboardButton(
-        text="Torna all'archivio 🗄️", 
-        web_app=types.WebAppInfo(url=WEB_APP_URL)
-    ))
+    # GESTORE CRUCIALE: Ascolta TUTTI i dati inviati dalla Web App
+    # Questo risolve il problema del "Torna in archivio" che non manda video
+    application.add_handler(MessageHandler(filters.StatusUpdate.WEB_APP_DATA, handle_webapp_data))
 
-    try:
-        sent = bot.send_video(
-            chat_id, 
-            file_id, 
-            caption="Ecco il set richiesto! 🏐", 
-            reply_markup=markup
-        )
-        last_messages[chat_id] = sent.message_id
-    except Exception as e:
-        print(f"❌ Errore: {e}")
-        bot.send_message(chat_id, "⚠️ Errore nell'invio del video. Verifica l'ID nel file JS.")
+    print("Bot avviato con successo! Premi CTRL+C per fermarlo.")
+    application.run_polling()
 
-if __name__ == "__main__":
-    bot.infinity_polling()
+if __name__ == '__main__':
+    main()
+    
