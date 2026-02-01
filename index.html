@@ -356,7 +356,7 @@
                 document.getElementById('episodi-list').innerHTML = match.episodi.map((ep, idx) => `
                     <div class="episodio-item" onclick="startEpisode('${ep.id}', '${match.id}')">
                         <div class="ep-thumb-container">
-                            <img src="${match.img}">
+                            <img src="${ep.img || match.img}">
                             <img src="PNG/HomeMenu.png" class="ep-play-icon">
                         </div>
                         <div class="ep-info">
