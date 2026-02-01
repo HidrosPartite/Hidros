@@ -14,7 +14,13 @@ last_messages = {}
 
 print("--- 🚀 BOT HIDROS ATTIVO ---")
 
-# FUNZIONE AGGIUNTA: Ottieni File ID inviando un video o file al bot
+# Imposta il pulsante fisso "Open App" accanto alla tastiera (Risolve l'errore nella bash)
+try:
+    bot.set_chat_menu_button(None, types.MenuButtonWebApp(text="Archivio 🏐", web_app=types.WebAppInfo(url=WEB_APP_URL)))
+except Exception as e:
+    print(f"Errore impostazione MenuButton: {e}")
+
+# Ottieni File ID inviando un video o file al bot
 @bot.message_handler(content_types=['video', 'document'])
 def get_file_id(message):
     file_id = None
@@ -29,7 +35,12 @@ def get_file_id(message):
 
 @bot.message_handler(commands=['start'])
 def handle_start(message):
-    markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
+    # Aggiungiamo 'input_field_placeholder' per aiutare l'utente da mobile
+    markup = types.ReplyKeyboardMarkup(
+        resize_keyboard=True, 
+        one_time_keyboard=False,
+        input_field_placeholder="Clicca il tasto qui sotto ↓"
+    )
     web_app_btn = types.KeyboardButton(
         text="🏐 APRI ARCHIVIO HIDROS", 
         web_app=types.WebAppInfo(url=WEB_APP_URL)
@@ -38,7 +49,7 @@ def handle_start(message):
     
     bot.send_message(
         message.chat.id, 
-        "<b>Benvenuto!</b>\nUsa il tasto grigio in basso per sfogliare l'archivio.", 
+        "<b>Benvenuto!</b>\nSe non vedi il pulsante grigio, clicca l'icona ⊞ accanto alla tastiera o usa il tasto 'Archivio' in blu.", 
         parse_mode='HTML',
         reply_markup=markup
     )
@@ -50,7 +61,6 @@ def handle_web_app_data(message):
     
     print(f"📥 Ricevuto ID: {file_id}")
 
-    # --- SECONDA COSA (RIPRISTINATA): Pulizia automatica ---
     if chat_id in last_messages:
         try: 
             bot.delete_message(chat_id, last_messages[chat_id])
@@ -58,13 +68,11 @@ def handle_web_app_data(message):
             print(f"Non ho potuto cancellare il messaggio: {e}")
 
     try:
-        # Invia il video SENZA il tasto inline 
         sent = bot.send_video(
             chat_id, 
             file_id, 
             caption="Ecco il set richiesto! 🏐"
         )
-        # Salva l'ID di questo messaggio per cancellarlo alla prossima richiesta
         last_messages[chat_id] = sent.message_id
         
     except Exception as e:
