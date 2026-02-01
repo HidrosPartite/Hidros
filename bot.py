@@ -5,8 +5,8 @@ from telegram.ext import Application, CommandHandler, MessageHandler, filters, C
 # Abilita i log per vedere gli errori nella bash
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
 
-TOKEN = "IL_TUO_TOKEN_QUI"
-URL_WEBAPP = "IL_TUO_URL_GITHUB_PAGES"
+TOKEN = "8134996939:AAEIXfskFlPh1L9arz8Vt2vFN8y1NWUZyjw"
+URL_WEBAPP = "https://hidrospartite.github.io/Hidros/"
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Invia il tasto per aprire l'archivio"""
@@ -53,4 +53,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-    
