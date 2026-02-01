@@ -12,8 +12,9 @@ const DB_PARTITE = [
         HomeRecenti: 'si', 
         episodi: [
             {id: 'BAACAgQAAyEFAATHEOJSAAMCaX5xmK_g1rkhWydf3d8__DuedTQAAn8dAALUEfBTh6aPL5JsZaw4BA', titolo: 'Primo Set', img: ''}, 
-            {id: '', titolo: 'Secondo Set', img: ''}, 
-            {id: 'INSERISCI_QUI_IL_TERZO_ID', titolo: 'Terzo Set', img: ''}
+            {id: 'BAACAgQAAyEFAATHEOJSAAMLaX8hgz-flJWc1WgMCS1TZTQkk1gAArocAALBIPhT_Gv2obMXpcQ4BA', titolo: 'Secondo Set', img: ''}, 
+            {id: 'BAACAgQAAyEFAATHEOJSAAMMaX8qU0PIn1TZxDDVyy7e6sEGg3gAAr4cAALBIPhTfFYHRoHtyF44BA', titolo: 'Terzo Set', img: ''},
+            {id: 'BAACAgQAAyEFAATHEOJSAAMUaX8vNQmxq2Sf-8OcnpIREVy0VfEAAsIcAALBIPhTWlIXvn6F4W04BA', titolo: 'Terzo Set Parte 2', img: ''}
         ] 
     },
 ];
