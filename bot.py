@@ -14,13 +14,19 @@ last_messages = {}
 
 print("--- 🚀 BOT HIDROS ATTIVO ---")
 
-# Imposta il pulsante fisso "Open App" accanto alla tastiera (Risolve l'errore nella bash)
+# --- FIX ERRORE: Aggiunto 'type' e corretta la struttura ---
 try:
-    bot.set_chat_menu_button(None, types.MenuButtonWebApp(text="Archivio 🏐", web_app=types.WebAppInfo(url=WEB_APP_URL)))
+    bot.set_chat_menu_button(
+        None, 
+        types.MenuButtonWebApp(
+            type="web_app", 
+            text="Archivio 🏐", 
+            web_app=types.WebAppInfo(url=WEB_APP_URL)
+        )
+    )
 except Exception as e:
     print(f"Errore impostazione MenuButton: {e}")
 
-# Ottieni File ID inviando un video o file al bot
 @bot.message_handler(content_types=['video', 'document'])
 def get_file_id(message):
     file_id = None
@@ -35,7 +41,6 @@ def get_file_id(message):
 
 @bot.message_handler(commands=['start'])
 def handle_start(message):
-    # Aggiungiamo 'input_field_placeholder' per aiutare l'utente da mobile
     markup = types.ReplyKeyboardMarkup(
         resize_keyboard=True, 
         one_time_keyboard=False,
@@ -49,7 +54,7 @@ def handle_start(message):
     
     bot.send_message(
         message.chat.id, 
-        "<b>Benvenuto!</b>\nSe non vedi il pulsante grigio, clicca l'icona ⊞ accanto alla tastiera o usa il tasto 'Archivio' in blu.", 
+        "<b>Benvenuto!</b>\nUsa il tasto grigio in basso o il tasto blu 'Archivio' per sfogliare.", 
         parse_mode='HTML',
         reply_markup=markup
     )
