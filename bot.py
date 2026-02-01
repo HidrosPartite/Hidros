@@ -14,6 +14,19 @@ last_messages = {}
 
 print("--- 🚀 BOT HIDROS ATTIVO ---")
 
+# FUNZIONE AGGIUNTA: Ottieni File ID inviando un video o file al bot
+@bot.message_handler(content_types=['video', 'document'])
+def get_file_id(message):
+    file_id = None
+    if message.video:
+        file_id = message.video.file_id
+    elif message.document:
+        file_id = message.document.file_id
+    
+    if file_id:
+        print(f"🎬 FILE ID TROVATO: {file_id}")
+        bot.reply_to(message, f"Copiato!\n\nID: `{file_id}`", parse_mode='Markdown')
+
 @bot.message_handler(commands=['start'])
 def handle_start(message):
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
