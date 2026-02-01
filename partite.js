@@ -6,7 +6,7 @@ const DB_PARTITE = [
         tag: 'Rimonta', 
         anno: '31 Gen 2026', 
         punteggio: '3 - 2', 
-        img: 'Copertine_Partite/Hidros_Vs_Casoria_31-01/Copertina_Principale', 
+        img: 'Copertine_Partite/Hidros_Vs_Casoria_31-01/Copertina_Principale.png', 
         sliderHome: 'si', 
         sliderCat: 'si', 
         HomeRecenti: 'si', 
