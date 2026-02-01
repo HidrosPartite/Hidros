@@ -8,7 +8,7 @@ bot = telebot.TeleBot(API_TOKEN)
 WEB_APP_URL = 'https://hidrospartite.github.io/Hidros/'
 last_messages = {}
 
-print("--- 🚀 BOT HIDROS ATTIVO (Senza barra verde) ---")
+print("--- 🚀 BOT HIDROS ATTIVO ---")
 
 # CORREZIONE: Aggiunto web_app= per risolvere il TypeError dello screenshot
 bot.set_chat_menu_button(None, types.MenuButtonWebApp(
