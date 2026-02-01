@@ -64,9 +64,20 @@
         .episodi-section { margin-top: 30px; border-top: 1px solid #222; padding-top: 20px; }
         .episodi-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
         .episodi-header h3 { margin: 0; font-size: 20px; }
-        .episodi-list { display: flex; overflow-x: auto; gap: 12px; padding-bottom: 15px; -webkit-overflow-scrolling: touch; }
         
-        /* Dimensioni rimpicciolite per tutti gli episodi */
+        /* Modifica per visualizzare la barra negli episodi */
+        .episodi-list { 
+            display: flex; 
+            overflow-x: scroll !important; 
+            gap: 12px; 
+            padding-bottom: 25px; 
+            scrollbar-width: thin;
+            scrollbar-color: #a855f7 #1c1c1c;
+        }
+        .episodi-list::-webkit-scrollbar { height: 6px; display: block !important; }
+        .episodi-list::-webkit-scrollbar-track { background: #1c1c1c; border-radius: 10px; }
+        .episodi-list::-webkit-scrollbar-thumb { background: #a855f7; border-radius: 10px; }
+        
         .episodio-item { min-width: 135px !important; width: 135px !important; background: #111; padding: 8px; border-radius: 10px; cursor: pointer; flex-shrink: 0; }
         .ep-thumb-container { width: 100%; aspect-ratio: 16/9; border-radius: 6px; overflow: hidden; position: relative; margin-bottom: 8px; }
         .ep-thumb-container img { width: 100%; height: 100%; object-fit: cover; }
