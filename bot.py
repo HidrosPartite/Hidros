@@ -2,8 +2,28 @@ import telebot
 import os
 import time
 from telebot import types
+from flask import Flask
+from threading import Thread
 
-# Il token viene preso dalla bash tramite export BOT_TOKEN='...'
+# --- CONFIGURAZIONE ANTI-SLEEP PER RENDER ---
+app = Flask('')
+
+@app.route('/')
+def home():
+    return "Il bot Hidros è attivo e funzionante!"
+
+def run():
+    # Render assegna automaticamente una porta, di solito la 10000 o 8080
+    port = int(os.environ.get("PORT", 8080))
+    app.run(host='0.0.0.0', port=port)
+
+def keep_alive():
+    t = Thread(target=run)
+    t.daemon = True # Il thread si chiude se il programma principale si ferma
+    t.start()
+# --------------------------------------------
+
+# Il token viene preso dall'ambiente (Environment Variables su Render)
 API_TOKEN = os.getenv('BOT_TOKEN')
 bot = telebot.TeleBot(API_TOKEN)
 
@@ -28,7 +48,7 @@ try:
 except Exception as e:
     print(f"Errore impostazione MenuButton: {e}")
 
-# --- MODIFICA QUI: Gestione File ID più sicura ---
+# Gestione File ID
 @bot.message_handler(content_types=['video', 'document'])
 def get_file_id(message):
     file_id = None
@@ -39,7 +59,6 @@ def get_file_id(message):
     
     if file_id:
         print(f"🎬 FILE ID TROVATO: {file_id}")
-        # Usiamo send_message invece di reply_to per evitare crash se il messaggio originale sparisce
         bot.send_message(message.chat.id, f"Copiato!\n\nID: `{file_id}`", parse_mode='Markdown')
 
 @bot.message_handler(commands=['start'])
@@ -87,8 +106,13 @@ def handle_web_app_data(message):
         print(f"❌ Errore nell'invio video: {e}")
         bot.send_message(chat_id, "⚠️ Errore: non riesco a inviare il video. Verifica che l'ID sia corretto.")
 
-# Gestione Polling Anti-Crash
+# Avvio del bot e del server web
 if __name__ == "__main__":
+    # Avvia il server web per l'anti-sleep
+    print("--- 🌐 Avvio server web di controllo ---")
+    keep_alive()
+    
+    # Loop del bot
     while True:
         try:
             print("--- 📡 Il Bot è in ascolto... ---")
