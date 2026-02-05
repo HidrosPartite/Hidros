@@ -1,6 +1,6 @@
 const DB_PARTITE = [
     { 
-        id: 'Hidros_Vs_Casoria_31-01', 
+        id: 'NON_INVIARE_QUESTO_SE_HAI_EPISODI', 
         titolo: 'Hidros vs Volley Casoria', 
         cat: 'Serie C', 
         tag: 'Rimonta', 
@@ -18,7 +18,7 @@ const DB_PARTITE = [
         ] 
     },
     { 
-    id: 'Hidros_Vs_Aquila_Volley_03-02', 
+    id: 'NON_INVIARE_QUESTO_SE_HAI_EPISODI', 
     titolo: 'Hidros vs Aquila Volley Marcianise', 
     cat: 'Under 16', 
     tag: 'In Evidenza', 
@@ -36,7 +36,7 @@ const DB_PARTITE = [
     ] 
 },
     { 
-    id: 'Hidros_Vs_Alp_Normanna_03-02', 
+    id: 'NON_INVIARE_QUESTO_SE_HAI_EPISODI', 
     titolo: 'Hidros vs Alp Normanna', 
     cat: 'Under 18', 
     tag: 'Big Match', 
