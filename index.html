@@ -65,7 +65,6 @@
         .episodi-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
         .episodi-header h3 { margin: 0; font-size: 20px; }
         
-        /* Modifica per visualizzare la barra negli episodi */
         .episodi-list { 
             display: flex; 
             overflow-x: scroll !important; 
@@ -252,6 +251,7 @@
         tg.expand();
 
         let currentMatchId = '';
+        let currentDbType = ''; // Aggiunto per tracciare il tipo di database attivo
         let sliders = { home: { idx: 0, start: Date.now() }, cat: { idx: 0, start: Date.now() }, high: { idx: 0, start: Date.now() } };
 
         function initApp() {
@@ -365,8 +365,13 @@
             const match = db.find(p => p.id === id);
             if(!match) return;
 
+            currentMatchId = id;
+            currentDbType = dbType; // Salva il tipo di db per la funzione startVideo
+
             const mainBtn = document.getElementById('main-watch-btn');
             const episodiBox = document.getElementById('episodi-container');
+            
+            // Resetta lo stato visibile
             mainBtn.style.display = 'block';
             episodiBox.style.display = 'none';
 
@@ -399,7 +404,6 @@
 
             document.getElementById('player-page').style.display = 'block';
             document.body.style.overflow = 'hidden';
-            currentMatchId = id;
         }
 
         function closePlayer() { 
@@ -416,17 +420,17 @@
         }
 
         function startVideo() { 
-            const allDbs = [...DB_PARTITE, ...DB_HIGHLIGHTS, ...DB_SHORTS];
-            const match = allDbs.find(p => p.id === currentMatchId);
+            let db = DB_PARTITE;
+            if(currentDbType === 'highlights') db = DB_HIGHLIGHTS;
+            if(currentDbType === 'shorts') db = DB_SHORTS;
+            
+            const match = db.find(p => p.id === currentMatchId);
             if(match) {
-                let type = 'partite';
-                if(DB_HIGHLIGHTS.find(x => x.id === match.id)) type = 'highlights';
-                if(DB_SHORTS.find(x => x.id === match.id)) type = 'shorts';
-                addToHistory(match, type); 
+                addToHistory(match, currentDbType); 
+                tg.sendData(match.id); // Invia l'ID specifico trovato nel DB selezionato
+                tg.HapticFeedback.impactOccurred('heavy');
+                setTimeout(() => { tg.close(); }, 400); 
             }
-            tg.sendData(currentMatchId); 
-            tg.HapticFeedback.impactOccurred('heavy');
-            setTimeout(() => { tg.close(); }, 400); 
         }
 
         function showPage(pageId) {
