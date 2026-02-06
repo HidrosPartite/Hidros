@@ -24,7 +24,7 @@ const DB_PARTITE = [
     tag: 'In Evidenza', 
     anno: '03 Feb 2026', 
     punteggio: '3 - 0', 
-    img: 'Copertine_Partite/Hidros_Vs_Aquila_Volley_03-02/Copertina_Principale.png', 
+    img: 'Copertine_Partite/Hidros_Vs_Aquila_Volley_03-02/Copertina_Principale_04-02.png', 
     sliderHome: 'si', 
     sliderCat: 'si', 
     HomeRecenti: 'si', 
