@@ -60,7 +60,7 @@ const DB_PARTITE = [
     tag: 'Facile', 
     anno: '04 Feb 2026', 
     punteggio: '3 - 0', 
-    img: 'Copertine_Partite/Hidros_Vs_Virtus_Aversa_04-02/Copertina_Principale.png', 
+    img: 'Copertine_Partite/Hidros_Vs_Virtus_Aversa_04-02/Copertina_Principale_04-02.png', 
     sliderHome: 'si', 
     sliderCat: 'si', 
     HomeRecenti: 'si', 
