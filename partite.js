@@ -1,6 +1,6 @@
 const DB_PARTITE = [
     { 
-        id: 'serie_c_casoria_01', 
+        id: 'serie_c_casoria_01', //Hidros vs Volley Casoria Serie C 
         titolo: 'Hidros vs Volley Casoria', 
         cat: 'Serie C', 
         tag: 'Rimonta', 
@@ -18,7 +18,7 @@ const DB_PARTITE = [
         ] 
     },
     { 
-    id: 'u16_marcianise_01', 
+    id: 'u16_marcianise_01', //Hidros vs Aquila Volley Marcianise Under 16
     titolo: 'Hidros vs Aquila Volley Marcianise', 
     cat: 'Under 16', 
     tag: 'In Evidenza', 
@@ -36,7 +36,7 @@ const DB_PARTITE = [
     ] 
 },
     { 
-    id: 'u18_alp_normanna_01', 
+    id: 'u18_alp_normanna_01', //Hidros vs Alp Normanna Under 18
     titolo: 'Hidros vs Alp Normanna', 
     cat: 'Under 18', 
     tag: 'Big Match', 
@@ -53,4 +53,21 @@ const DB_PARTITE = [
         {id: 'BAACAgQAAyEFAATHEOJSAAMxaYUPRr30tEW_ELc-r8UXqaVVFJgAAx0AAlMqKFBXq7mVl-8t6jgE', titolo: 'Quarto Set', img: 'Copertine_Partite/Hidros_Vs_Alp_Normanna_03-02/Quarto_Set.png'}
     ] 
 },
+    { 
+    id: 'u19_virtus_aversa_01', //Hidros vs Virtus Aversa Under 19
+    titolo: 'Hidros vs Virtus Aversa', 
+    cat: 'Under 19', 
+    tag: 'Facile', 
+    anno: '04 Feb 2026', 
+    punteggio: '3 - 0', 
+    img: 'Copertine_Partite/Hidros_Vs_Virtus_Aversa_04-02/Copertina_Principale.png', 
+    sliderHome: 'si', 
+    sliderCat: 'si', 
+    HomeRecenti: 'si', 
+    episodi: [
+        {id: 'BAACAgQAAyEFAATHEOJSAAM6aYUYfY46wM-lBl1M4083-Sj5DiQAAhwdAAJTKihQsiPJQbEmouU4BA', titolo: 'Primo Set', img: 'Copertine_Partite/Hidros_Vs_Virtus_Aversa_04-02/Primo_Set.png'}, 
+        {id: 'BAACAgQAAyEFAATHEOJSAAM8aYXH1VMQxO4-r7GxnN1Fa7i4kjoAAnYdAAJTKihQVREQDj6TS9I4BA', titolo: 'Secondo Set', img: 'Copertine_Partite/Hidros_Vs_Virtus_Aversa_04-02/Secondo_Set.png'}, 
+        {id: 'BAACAgQAAyEFAATHEOJSAAM-aYXO2MpvcZh_vmhNUQU4kWEqkBMAAoodAAJTKihQFhFfJb-tNFY4BA', titolo: 'Terzo Set', img: 'Copertine_Partite/Hidros_Vs_Virtus_Aversa_04-02/Terzo_Set.png'},
+        ] 
+ }
 ];
