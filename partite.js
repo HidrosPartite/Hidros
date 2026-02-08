@@ -3,7 +3,7 @@ const DB_PARTITE = [
     	id: 'prima_divisione_san_marco_01', //Hidros vs Volley San Marco Prima Divisione
     	titolo: 'Hidros vs Volley San Marco', 
     	cat: 'Prima Divisione', 
-    	tag: 'Simone MVP', 
+    	tag: '3 - 0', 
     	anno: '08 Feb 2026', 
     	punteggio: '3 - 0', 
     	img: 'Copertine_Partite/Hidros_vs_Volley_San_Marco_08-02/Copertina_Principale_08-02.png', 
