@@ -1,5 +1,22 @@
 const DB_PARTITE = [
-    { 
+      { 
+    	id: 'prima_divisione_san_marco_01', //Hidros vs Volley San Marco Prima Divisione
+    	titolo: 'Hidros vs Volley San Marco', 
+    	cat: 'Prima Divisione', 
+    	tag: 'Simone MVP', 
+    	anno: '08 Feb 2026', 
+    	punteggio: '3 - 0', 
+    	img: 'Copertine_Partite/Hidros_vs_Volley_San_Marco_08-02/Copertina_Principale_08-02.png', 
+    	sliderHome: 'si', 
+    	sliderCat: 'si', 
+    	HomeRecenti: 'si', 
+    	episodi: [
+            {id: 'BAACAgQAAyEFAATHEOJSAANBaYjyd0q2ujpEjtuHbj16jn4RliwAArgaAAII9EhQGnot1v0a4-Y6BA', titolo: 'Primo Set', img: 'Copertine_Partite/Hidros_vs_Volley_San_Marco_08-02/Primo_Set.png'}, 
+            {id: 'BAACAgQAAyEFAATHEOJSAANFaYj6eiA2z6nBssbiRD4e01p8FukAAtgaAAII9EhQP7nN9OED25Q6BA', titolo: 'Secondo Set', img: 'Copertine_Partite/Hidros_vs_Volley_San_Marco_08-02/Secondo_Set.png'}, 
+            {id: '', titolo: 'Terzo Set', img: 'Copertine_Partite/Hidros_vs_Volley_San_Marco_08-02/Terzo_Set.png'},
+        ] 
+ },
+	{ 
         id: 'serie_c_casoria_01', //Hidros vs Volley Casoria Serie C 
         titolo: 'Hidros vs Volley Casoria', 
         cat: 'Serie C', 
@@ -7,32 +24,32 @@ const DB_PARTITE = [
         anno: '31 Gen 2026', 
         punteggio: '3 - 2', 
         img: 'Copertine_Partite/Hidros_Vs_Casoria_31-01/Copertina_Principale.png', 
-        sliderHome: 'si', 
+        sliderHome: 'no', 
         sliderCat: 'si', 
-        HomeRecenti: 'si', 
+        HomeRecenti: 'no', 
         episodi: [
             {id: 'BAACAgQAAyEFAATHEOJSAAMCaX5xmK_g1rkhWydf3d8__DuedTQAAn8dAALUEfBTh6aPL5JsZaw4BA', titolo: 'Primo Set', img: 'Copertine_Partite/Hidros_Vs_Casoria_31-01/Primo_Set.png'}, 
             {id: 'BAACAgQAAyEFAATHEOJSAAMLaX8hgz-flJWc1WgMCS1TZTQkk1gAArocAALBIPhT_Gv2obMXpcQ4BA', titolo: 'Secondo Set', img: 'Copertine_Partite/Hidros_Vs_Casoria_31-01/Secondo_Set.png'}, 
             {id: 'BAACAgQAAyEFAATHEOJSAAMMaX8qU0PIn1TZxDDVyy7e6sEGg3gAAr4cAALBIPhTfFYHRoHtyF44BA', titolo: 'Terzo Set', img: 'Copertine_Partite/Hidros_Vs_Casoria_31-01/Terzo_Set.png'},
             {id: 'BAACAgQAAyEFAATHEOJSAAMUaX8vNQmxq2Sf-8OcnpIREVy0VfEAAsIcAALBIPhTWlIXvn6F4W04BA', titolo: 'Terzo Set Parte 2', img: 'Copertine_Partite/Hidros_Vs_Casoria_31-01/Terzo_Set_Parte_2.png'}
         ] 
-    },
-    { 
-    id: 'u16_marcianise_01', //Hidros vs Aquila Volley Marcianise Under 16
-    titolo: 'Hidros vs Aquila Volley Marcianise', 
-    cat: 'Under 16', 
-    tag: 'In Evidenza', 
-    anno: '03 Feb 2026', 
-    punteggio: '3 - 0', 
-    img: 'Copertine_Partite/Hidros_Vs_Aquila_Volley_03-02/Copertina_Principale.png', 
-    sliderHome: 'si', 
-    sliderCat: 'si', 
-    HomeRecenti: 'si', 
-    episodi: [
-        {id: 'BAACAgQAAyEFAATHEOJSAAMbaYL4WbZZyYirLadO69GLNXPoZW8AAoQbAAKUXhlQHD3qSxToV0k4BA', titolo: 'Inizio', img: 'Copertine_Partite/Hidros_Vs_Aquila_Volley_03-02/Inizio.png'}, 
-        {id: 'BAACAgQAAyEFAATHEOJSAAMdaYMrA3v9nEeQ1IvMDie03b4koK8AAq8bAAKUXhlQnrCB9RdyLlE4BA', titolo: 'Primo Set', img: 'Copertine_Partite/Hidros_Vs_Aquila_Volley_03-02/Primo_Set.png'}, 
-        {id: 'BAACAgQAAyEFAATHEOJSAAMgaYNcajAsx1SO9GJSWlCVKEHXk2UAAugbAAKUXhlQnHjXEtBLcAs4BA', titolo: 'Secondo Set', img: 'Copertine_Partite/Hidros_Vs_Aquila_Volley_03-02/Secondo_Set.png'},
-        {id: 'BAACAgQAAyEFAATHEOJSAAMiaYNiXagaH6CAvTospT2WfgGuDNQAAu0bAAKUXhlQfXhynz_Le984BA', titolo: 'Terzo Set', img: 'Copertine_Partite/Hidros_Vs_Aquila_Volley_03-02/Terzo_Set.png'}
+ },
+    	{ 
+    	id: 'u16_marcianise_01', //Hidros vs Aquila Volley Marcianise Under 16
+    	titolo: 'Hidros vs Aquila Volley Marcianise', 
+    	cat: 'Under 16', 
+    	tag: 'In Evidenza', 
+    	anno: '03 Feb 2026', 
+    	punteggio: '3 - 0', 
+    	img: 'Copertine_Partite/Hidros_Vs_Aquila_Volley_03-02/Copertina_Principale.png', 
+    	sliderHome: 'si', 
+    	sliderCat: 'si', 
+    	HomeRecenti: 'si', 
+    	episodi: [
+            {id: 'BAACAgQAAyEFAATHEOJSAAMbaYL4WbZZyYirLadO69GLNXPoZW8AAoQbAAKUXhlQHD3qSxToV0k4BA', titolo: 'Inizio', img: 'Copertine_Partite/Hidros_Vs_Aquila_Volley_03-02/Inizio.png'}, 
+            {id: 'BAACAgQAAyEFAATHEOJSAAMdaYMrA3v9nEeQ1IvMDie03b4koK8AAq8bAAKUXhlQnrCB9RdyLlE4BA', titolo: 'Primo Set', img: 'Copertine_Partite/Hidros_Vs_Aquila_Volley_03-02/Primo_Set.png'}, 
+            {id: 'BAACAgQAAyEFAATHEOJSAAMgaYNcajAsx1SO9GJSWlCVKEHXk2UAAugbAAKUXhlQnHjXEtBLcAs4BA', titolo: 'Secondo Set', img: 'Copertine_Partite/Hidros_Vs_Aquila_Volley_03-02/Secondo_Set.png'},
+            {id: 'BAACAgQAAyEFAATHEOJSAAMiaYNiXagaH6CAvTospT2WfgGuDNQAAu0bAAKUXhlQfXhynz_Le984BA', titolo: 'Terzo Set', img: 'Copertine_Partite/Hidros_Vs_Aquila_Volley_03-02/Terzo_Set.png'}
     ] 
 },
     { 
@@ -68,6 +85,6 @@ const DB_PARTITE = [
         {id: 'BAACAgQAAyEFAATHEOJSAAM6aYUYfY46wM-lBl1M4083-Sj5DiQAAhwdAAJTKihQsiPJQbEmouU4BA', titolo: 'Primo Set', img: 'Copertine_Partite/Hidros_Vs_Virtus_Aversa_04-02/Primo_Set.png'}, 
         {id: 'BAACAgQAAyEFAATHEOJSAAM8aYXH1VMQxO4-r7GxnN1Fa7i4kjoAAnYdAAJTKihQVREQDj6TS9I4BA', titolo: 'Secondo Set', img: 'Copertine_Partite/Hidros_Vs_Virtus_Aversa_04-02/Secondo_Set.png'}, 
         {id: 'BAACAgQAAyEFAATHEOJSAAM-aYXO2MpvcZh_vmhNUQU4kWEqkBMAAoodAAJTKihQFhFfJb-tNFY4BA', titolo: 'Terzo Set', img: 'Copertine_Partite/Hidros_Vs_Virtus_Aversa_04-02/Terzo_Set.png'},
-        ] 
- }
+     ] 
+ },
 ];
