@@ -13,7 +13,7 @@ const DB_PARTITE = [
     	episodi: [
             {id: 'BAACAgQAAyEFAATHEOJSAANBaYjyd0q2ujpEjtuHbj16jn4RliwAArgaAAII9EhQGnot1v0a4-Y6BA', titolo: 'Primo Set', img: 'Copertine_Partite/Hidros_vs_Volley_San_Marco_08-02/Primo_Set.png'}, 
             {id: 'BAACAgQAAyEFAATHEOJSAANFaYj6eiA2z6nBssbiRD4e01p8FukAAtgaAAII9EhQP7nN9OED25Q6BA', titolo: 'Secondo Set', img: 'Copertine_Partite/Hidros_vs_Volley_San_Marco_08-02/Secondo_Set.png'}, 
-            {id: '', titolo: 'Terzo Set', img: 'Copertine_Partite/Hidros_vs_Volley_San_Marco_08-02/Terzo_Set.png'},
+            {id: 'BAACAgQAAyEFAATHEOJSAANIaYkIOyOcAAHeDbyvF4qqXIlkpoqAAALoGgACCPRIUJbGk4LdFDyZOgQ', titolo: 'Terzo Set', img: 'Copertine_Partite/Hidros_vs_Volley_San_Marco_08-02/Terzo_Set.png'},
         ] 
  },
 	{ 
