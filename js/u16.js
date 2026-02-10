@@ -1,4 +1,4 @@
-//js/serie_c.js
+//Under 16
 const DB_U16 = [
     { 
     	id: 'u16_marcianise_01', //Hidros vs Aquila Volley Marcianise Under 16
