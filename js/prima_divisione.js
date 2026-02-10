@@ -1,4 +1,4 @@
-// prima_divisione.js
+//Prima divisione
 const DB_PRIMA_DIV = [
     { 
     	id: 'prima_divisione_san_marco_01', //Hidros vs Volley San Marco Prima Divisione
