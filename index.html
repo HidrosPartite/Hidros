@@ -504,19 +504,6 @@
             res.innerHTML = filtered.map(p => `<div class="search-result-item" onclick="openMatch('${p.id}', '${p.type}')"><img src="${p.img}" class="search-thumb"><div class="search-info"><b>${p.titolo}</b><div>${p.cat}</div></div></div>`).join('');
         }
 
-        function toggleDropdown(id) {
-            const el = document.getElementById(id);
-            el.style.display = (el.style.display === 'block') ? 'none' : 'block';
-        }
-
-        function openNav() { document.getElementById("mySidebar").style.width = "280px"; }
-        function closeNav() { document.getElementById("mySidebar").style.width = "0"; }
-        function toggleSearch() { 
-            const s = document.getElementById('search-bar-container'); 
-            s.style.display = s.style.display === 'block' ? 'none' : 'block'; 
-            if(s.style.display === 'block') document.getElementById('search-input').focus(); 
-        }
-
         function animate() {
             const keys = ['home', 'cat', 'high'];
             keys.forEach(k => {
@@ -540,6 +527,20 @@
             });
             requestAnimationFrame(animate);
         }
+
+        function toggleDropdown(id) {
+            const el = document.getElementById(id);
+            el.style.display = (el.style.display === 'block') ? 'none' : 'block';
+        }
+
+        function toggleSearch() { 
+            const s = document.getElementById('search-bar-container'); 
+            s.style.display = s.style.display === 'block' ? 'none' : 'block'; 
+            if(s.style.display === 'block') document.getElementById('search-input').focus(); 
+        }
+
+        function openNav() { document.getElementById("mySidebar").style.width = "280px"; }
+        function closeNav() { document.getElementById("mySidebar").style.width = "0"; }
 
         window.onload = () => { initApp(); animate(); };
     </script>
