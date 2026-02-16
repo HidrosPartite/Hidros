@@ -10,7 +10,7 @@ const DB_U18 = [
     img: 'Copertine_Partite/Hidros_Vs_Alp_Normanna_03-02/Copertina_Principale.png', 
     sliderHome: 'si', 
     sliderCat: 'si', 
-    HomeRecenti: 'si', 
+    HomeRecenti: 'no', 
     episodi: [
         {id: 'BAACAgQAAyEFAATHEOJSAAMraYTureRDtBTXRBtFa2ULjShmTv4AAt8cAAJTKihQD-WlpYJmDCk4BA', titolo: 'Primo Set', img: 'Copertine_Partite/Hidros_Vs_Alp_Normanna_03-02/Primo_Set.png'}, 
         {id: 'BAACAgQAAyEFAATHEOJSAAMtaYT6P5X3VIc4rpuH8_pKDAKZuMcAAuscAAJTKihQZuDkrTcrLPk4BA', titolo: 'Secondo Set', img: 'Copertine_Partite/Hidros_Vs_Alp_Normanna_03-02/Secondo_Set.png'}, 
