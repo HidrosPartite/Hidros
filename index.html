@@ -550,13 +550,26 @@
         }
         function openNav() { document.getElementById("mySidebar").style.width = "280px"; }
         function closeNav() { document.getElementById("mySidebar").style.width = "0"; }
-        function toggleDropdown(id) { 
-            const d = document.getElementById(id); 
-            d.style.display = d.style.display === "block" ? "none" : "block"; 
+
+        /* --- FUNZIONI AGGIUNTE PER FUNZIONAMENTO --- */
+        function toggleDropdown(id) {
+            const dropdown = document.getElementById(id);
+            const caret = dropdown.previousElementSibling.querySelector('.caret');
+            const display = window.getComputedStyle(dropdown).display;
+            
+            if (display === "none") {
+                dropdown.style.display = "block";
+                if(caret) caret.innerText = "▲";
+            } else {
+                dropdown.style.display = "none";
+                if(caret) caret.innerText = "▼";
+            }
         }
 
-        initApp();
-        animate();
+        window.onload = () => {
+            initApp();
+            animate();
+        };
     </script>
 </body>
 </html>
