@@ -1,6 +1,6 @@
 //Under 17
 const DB_U17 = [
-  id: 'under17_matese_01', //Hidros vs Carbat Matese Under 17
+  id: 'u17_carbat_01', //Hidros vs Carbat Matese Under 17
     	titolo: 'Hidros vs Carbat Matese', 
     	cat: 'Under 17', 
     	tag: '1 - 3', 
