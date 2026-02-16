@@ -17,7 +17,6 @@
     <script src="js/serie_c.js"></script>
     
     <script src="js/database.js"></script>
-
     <script src="highlights.js"></script>
     <script src="shorts.js"></script>
 
@@ -246,9 +245,7 @@
             <div id="p-title" class="player-title">Titolo</div>
             <div id="p-score" class="player-score">0 - 0</div>
             <div id="p-date" class="player-date">Data</div>
-            
             <button id="main-watch-btn" class="watch-btn" onclick="startVideo()">GUARDA IL MATCH</button>
-
             <div id="episodi-container" class="episodi-section" style="display: none;">
                 <div class="episodi-header">
                     <h3>Episodi</h3>
@@ -263,10 +260,11 @@
         tg.expand();
 
         let currentMatchId = '';
-        let currentDbType = ''; // Aggiunto per tracciare il tipo di database attivo
+        let currentDbType = ''; 
         let sliders = { home: { idx: 0, start: Date.now() }, cat: { idx: 0, start: Date.now() }, high: { idx: 0, start: Date.now() } };
 
         function initApp() {
+            if (typeof DB_PARTITE === 'undefined') return;
             const sliderHome = document.getElementById('homeSlider');
             if(sliderHome) {
                 const homeSlides = DB_PARTITE.filter(p => p.sliderHome === 'si');
@@ -373,17 +371,14 @@
             let db = DB_PARTITE;
             if(dbType === 'highlights') db = DB_HIGHLIGHTS;
             if(dbType === 'shorts') db = DB_SHORTS;
-
             const match = db.find(p => p.id === id);
             if(!match) return;
-
             currentMatchId = id;
-            currentDbType = dbType; // Salva il tipo di db per la funzione startVideo
+            currentDbType = dbType;
 
             const mainBtn = document.getElementById('main-watch-btn');
             const episodiBox = document.getElementById('episodi-container');
             
-            // Resetta lo stato visibile
             mainBtn.style.display = 'block';
             episodiBox.style.display = 'none';
 
@@ -402,9 +397,7 @@
                 episodiBox.style.display = 'block';
                 document.getElementById('episodi-list').innerHTML = match.episodi.map((ep, idx) => `
                     <div class="episodio-item" onclick="startEpisode('${ep.id}', '${match.id}')">
-                        <div class="ep-thumb-container">
-                            <img src="${ep.img || match.img}">
-                        </div>
+                        <div class="ep-thumb-container"><img src="${ep.img || match.img}"></div>
                         <div class="ep-info">
                             <div class="ep-title">${ep.titolo}</div>
                             <div class="ep-sub">Episodio ${idx + 1}</div>
@@ -413,7 +406,6 @@
                     </div>
                 `).join('');
             }
-
             document.getElementById('player-page').style.display = 'block';
             document.body.style.overflow = 'hidden';
         }
@@ -435,11 +427,10 @@
             let db = DB_PARTITE;
             if(currentDbType === 'highlights') db = DB_HIGHLIGHTS;
             if(currentDbType === 'shorts') db = DB_SHORTS;
-            
             const match = db.find(p => p.id === currentMatchId);
             if(match) {
                 addToHistory(match, currentDbType); 
-                tg.sendData(match.id); // Invia l'ID specifico trovato nel DB selezionato
+                tg.sendData(match.id);
                 tg.HapticFeedback.impactOccurred('heavy');
                 setTimeout(() => { tg.close(); }, 400); 
             }
@@ -513,23 +504,30 @@
             res.innerHTML = filtered.map(p => `<div class="search-result-item" onclick="openMatch('${p.id}', '${p.type}')"><img src="${p.img}" class="search-thumb"><div class="search-info"><b>${p.titolo}</b><div>${p.cat}</div></div></div>`).join('');
         }
 
+        function toggleDropdown(id) {
+            const el = document.getElementById(id);
+            el.style.display = (el.style.display === 'block') ? 'none' : 'block';
+        }
+
+        function openNav() { document.getElementById("mySidebar").style.width = "280px"; }
+        function closeNav() { document.getElementById("mySidebar").style.width = "0"; }
+        function toggleSearch() { 
+            const s = document.getElementById('search-bar-container'); 
+            s.style.display = s.style.display === 'block' ? 'none' : 'block'; 
+            if(s.style.display === 'block') document.getElementById('search-input').focus(); 
+        }
+
         function animate() {
             const keys = ['home', 'cat', 'high'];
             keys.forEach(k => {
-                let pageId = k;
-                if(k === 'high') pageId = 'highlights-page';
-                if(k === 'cat') pageId = 'category-page';
-                
+                let pageId = k === 'high' ? 'highlights-page' : (k === 'cat' ? 'category-page' : 'home');
                 const p = document.getElementById(pageId);
                 if(p && p.classList.contains('active-page')) {
                     const bar = document.getElementById(k + 'ProgressBar');
                     const slider = document.getElementById(k + 'Slider');
                     if(!bar || !slider) return;
-                    
                     let elapsed = Date.now() - sliders[k].start;
-                    let percent = Math.min((elapsed/5000)*100, 100);
-                    bar.style.width = percent + "%";
-                    
+                    bar.style.width = Math.min((elapsed/5000)*100, 100) + "%";
                     if(elapsed >= 5000) {
                         const slides = slider.querySelectorAll('.slide');
                         if(slides.length > 1) { 
@@ -543,33 +541,7 @@
             requestAnimationFrame(animate);
         }
 
-        function toggleSearch() { 
-            const s = document.getElementById('search-bar-container'); 
-            s.style.display = s.style.display === 'block' ? 'none' : 'block'; 
-            if(s.style.display === 'block') document.getElementById('search-input').focus(); 
-        }
-        function openNav() { document.getElementById("mySidebar").style.width = "280px"; }
-        function closeNav() { document.getElementById("mySidebar").style.width = "0"; }
-
-        /* --- FUNZIONI AGGIUNTE PER FUNZIONAMENTO --- */
-        function toggleDropdown(id) {
-            const dropdown = document.getElementById(id);
-            const caret = dropdown.previousElementSibling.querySelector('.caret');
-            const display = window.getComputedStyle(dropdown).display;
-            
-            if (display === "none") {
-                dropdown.style.display = "block";
-                if(caret) caret.innerText = "▲";
-            } else {
-                dropdown.style.display = "none";
-                if(caret) caret.innerText = "▼";
-            }
-        }
-
-        window.onload = () => {
-            initApp();
-            animate();
-        };
+        window.onload = () => { initApp(); animate(); };
     </script>
 </body>
 </html>
