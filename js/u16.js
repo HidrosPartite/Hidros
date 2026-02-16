@@ -4,7 +4,7 @@ const DB_U16 = [
     	id: 'u16_marcianise_01', //Hidros vs Aquila Volley Marcianise Under 16
     	titolo: 'Hidros vs Aquila Volley Marcianise', 
     	cat: 'Under 16', 
-    	tag: 'In Evidenza', 
+    	tag: 'In Evidenza',
     	anno: '03 Feb 2026', 
     	punteggio: '3 - 0', 
     	img: 'Copertine_Partite/Hidros_Vs_Aquila_Volley_03-02/Copertina_Principale.png', 
