@@ -26,9 +26,9 @@ const DB_U19 = [
     anno: '04 Feb 2026', 
     punteggio: '3 - 0', 
     img: 'Copertine_Partite/Hidros_Vs_Virtus_Aversa_04-02/Copertina_Principale_04-02.png', 
-    sliderHome: 'si', 
+    sliderHome: 'no', 
     sliderCat: 'si', 
-    HomeRecenti: 'si', 
+    HomeRecenti: 'no', 
     episodi: [
         {id: 'BAACAgQAAyEFAATHEOJSAAM6aYUYfY46wM-lBl1M4083-Sj5DiQAAhwdAAJTKihQsiPJQbEmouU4BA', titolo: 'Primo Set', img: 'Copertine_Partite/Hidros_Vs_Virtus_Aversa_04-02/Primo_Set.png'}, 
         {id: 'BAACAgQAAyEFAATHEOJSAAM8aYXH1VMQxO4-r7GxnN1Fa7i4kjoAAnYdAAJTKihQVREQDj6TS9I4BA', titolo: 'Secondo Set', img: 'Copertine_Partite/Hidros_Vs_Virtus_Aversa_04-02/Secondo_Set.png'}, 
