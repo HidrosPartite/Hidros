@@ -8,9 +8,9 @@ const DB_PRIMA_DIV = [
     	anno: '08 Feb 2026', 
     	punteggio: '3 - 0', 
     	img: 'Copertine_Partite/Hidros_vs_Volley_San_Marco_08-02/Copertina_Principale_08-02.png', 
-    	sliderHome: 'si', 
+    	sliderHome: 'no', 
     	sliderCat: 'si', 
-    	HomeRecenti: 'si', 
+    	HomeRecenti: 'no', 
     	episodi: [
             {id: 'BAACAgQAAyEFAATHEOJSAANBaYjyd0q2ujpEjtuHbj16jn4RliwAArgaAAII9EhQGnot1v0a4-Y6BA', titolo: 'Primo Set', img: 'Copertine_Partite/Hidros_vs_Volley_San_Marco_08-02/Primo_Set.png'}, 
             {id: 'BAACAgQAAyEFAATHEOJSAANFaYj6eiA2z6nBssbiRD4e01p8FukAAtgaAAII9EhQP7nN9OED25Q6BA', titolo: 'Secondo Set', img: 'Copertine_Partite/Hidros_vs_Volley_San_Marco_08-02/Secondo_Set.png'}, 
