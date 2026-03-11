@@ -1,7 +1,7 @@
 //Under 19
 const DB_U19 = [
     { 
-    	id: 'u19_volley_sanmarco_03', //Hidros vs Pallavolo 2000
+    	id: 'u19_volley_sanmarco_03', //Hidros vs Volley San Marco
     	titolo: 'Hidros vs Volley San Marco', 
     	cat: 'Under 19', 
     	tag: '3 - 0', 
