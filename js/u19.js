@@ -1,6 +1,22 @@
 //Under 19
 const DB_U19 = [
     { 
+    	id: 'u19_volley_sanmarco_03', //Hidros vs Pallavolo 2000
+    	titolo: 'Hidros vs Volley San Marco', 
+    	cat: 'Under 19', 
+    	tag: '3 - 0', 
+    	anno: '25 Feb 2026', 
+    	punteggio: '3 - 0', 
+    	img: 'Copertine_Partite/Hidros_vs_Volley_San_Marco/Copertina_Principale_25-02.png', 
+    	sliderHome: 'si', 
+    	sliderCat: 'si', 
+    	HomeRecenti: 'si', 
+    	episodi: [
+            {id: 'BAACAgQAAyEFAATHEOJSAAOMaa2l7y_rvXqs1YVlKOX7LXlMvOUAAt8dAAIDfnBRhHLlNo9b74A6BA', titolo: 'Primo Set', img: 'Copertine_Partite/Hidros_vs_Volley_San_Marco/Primo_Set.png'}, 
+            {id: 'BAACAgQAAyEFAATHEOJSAAOOaa2q6hJ_NI7C_DCQDVnWHRUy02UAAuAdAAIDfnBR8IjplrFlQsg6BA', titolo: 'Secondo Set', img: 'Copertine_Partite/Hidros_vs_Volley_San_Marco/Secondo_Set.png'}, 
+        ] 
+ },
+    { 
     	id: 'u19_Pallavolo_2000_02', //Hidros vs Pallavolo 2000
     	titolo: 'Hidros vs Pallavolo 2000', 
     	cat: 'Under 19', 
