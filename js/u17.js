@@ -1,6 +1,23 @@
 //Under 17
 const DB_U17 = [
     {
+        id: 'u17_ortar_02', 
+        titolo: 'Hidros vs Orta Rossa', 
+        cat: 'Under 17', 
+        tag: '0 - 3', 
+        anno: '01 APR 2026', 
+        punteggio: '0 - 3', 
+        img: 'Copertine_Partite/Hidros_Vs_Orta_Rossa_01-04/Copertina_Principale_01-04.png', 
+        sliderHome: 'no', 
+        sliderCat: 'si', 
+        HomeRecenti: 'si', 
+        episodi: [
+            {id: 'BAACAgQAAyEFAATHEOJSAAOSac44b_ou9zkZ_cbNcqKIZpV-fvkAAngdAAKI03hSXcEizoqQeyY6BA', titolo: 'Primo Set', img: 'Copertine_Partite/Hidros_Vs_Orta_Rossa_01-04/Primo_Set.png'}, 
+            {id: 'BAACAgQAAyEFAATHEOJSAAOUac48C5WkUmYV9FPj1r84NC8ohT8AAoMdAAKI03hS7lCRQuc5EYA6BA', titolo: 'Secondo Set', img: 'Copertine_Partite/Hidros_Vs_Orta_Rossa_01-04/Secondo_Set.png'}, 
+            {id: 'BAACAgQAAyEFAATHEOJSAAOWac5cJJn-Lw2Uzq6iSGBYb-Az_eEAApodAAKI03hSIhKvpotSS4g6BA', titolo: 'Terzo Set', img: 'Copertine_Partite/Hidros_Vs_Orta_Rossa_01-04/Terzo_Set.png'},
+        ] 
+    },
+    {
         id: 'u17_ortav_01', 
         titolo: 'Hidros vs Orta Verda', 
         cat: 'Under 17', 
